@@ -1,0 +1,62 @@
+
+<%@ page import="com.comtop.mobile.market.domain.SearchHistory" %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="layout" content="main">
+		<g:set var="entityName" value="${message(code: 'searchHistory.label', default: 'SearchHistory')}" />
+		<title><g:message code="default.show.label" args="[entityName]" /></title>
+	</head>
+	<body>
+		<a href="#show-searchHistory" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<div class="nav" role="navigation">
+			<ul>
+				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+			</ul>
+		</div>
+		<div id="show-searchHistory" class="content scaffold-show" role="main">
+			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+			<g:if test="${flash.message}">
+			<div class="message" role="status">${flash.message}</div>
+			</g:if>
+			<ol class="property-list searchHistory">
+			
+				<g:if test="${searchHistoryInstance?.keyWord}">
+				<li class="fieldcontain">
+					<span id="keyWord-label" class="property-label"><g:message code="searchHistory.keyWord.label" default="Key Word" /></span>
+					
+						<span class="property-value" aria-labelledby="keyWord-label"><g:fieldValue bean="${searchHistoryInstance}" field="keyWord"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${searchHistoryInstance?.searchTime}">
+				<li class="fieldcontain">
+					<span id="searchTime-label" class="property-label"><g:message code="searchHistory.searchTime.label" default="Search Time" /></span>
+					
+						<span class="property-value" aria-labelledby="searchTime-label"><g:formatDate date="${searchHistoryInstance?.searchTime}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${searchHistoryInstance?.user}">
+				<li class="fieldcontain">
+					<span id="user-label" class="property-label"><g:message code="searchHistory.user.label" default="User" /></span>
+					
+						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${searchHistoryInstance?.user?.id}">${searchHistoryInstance?.user?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+			</ol>
+			<g:form url="[resource:searchHistoryInstance, action:'delete']" method="DELETE">
+				<fieldset class="buttons">
+					<g:link class="edit" action="edit" resource="${searchHistoryInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+				</fieldset>
+			</g:form>
+		</div>
+	</body>
+</html>
