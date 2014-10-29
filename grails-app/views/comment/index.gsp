@@ -1,5 +1,5 @@
 
-<%@ page import="com.comtop.mobile.market.domain.Comment" %>
+<%@ page import="com.comtop.mobile.market.Comment" %>
 <!DOCTYPE html>
 <html>
 	<head>

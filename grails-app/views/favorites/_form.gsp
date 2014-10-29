@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.Favorites" %>
+<%@ page import="com.comtop.mobile.market.Favorites" %>
 
 
 
@@ -25,7 +25,7 @@
 		<g:message code="favorites.good.label" default="Good" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.domain.Good.list()}" optionKey="id" required="" value="${favoritesInstance?.good?.id}" class="many-to-one"/>
+	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.Good.list()}" optionKey="id" required="" value="${favoritesInstance?.good?.id}" class="many-to-one"/>
 
 </div>
 
@@ -34,7 +34,7 @@
 		<g:message code="favorites.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.domain.User.list()}" optionKey="id" required="" value="${favoritesInstance?.user?.id}" class="many-to-one"/>
+	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${favoritesInstance?.user?.id}" class="many-to-one"/>
 
 </div>
 

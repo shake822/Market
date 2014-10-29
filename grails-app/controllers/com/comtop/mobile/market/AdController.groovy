@@ -3,13 +3,18 @@ package com.comtop.mobile.market
 
 
 import static org.springframework.http.HttpStatus.*
+
+import com.comtop.mobile.market.util.FileUtils;
+
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class AdController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	
+	def fileUtils 
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Ad.list(params), model:[adInstanceCount: Ad.count()]
@@ -34,11 +39,11 @@ class AdController {
             respond adInstance.errors, view:'create'
             return
         }
-		 
 		def f = request.getFile('imgFile')
+		println f.getClass().getName()
 		adInstance.imgName = f.getOriginalFilename()
         adInstance.save flush:true
-		
+		fileUtils.saveFile(f,adInstance.id)
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'ad.label', default: 'Ad'), adInstance.id])

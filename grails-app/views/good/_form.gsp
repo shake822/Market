@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.Good" %>
+<%@ page import="com.comtop.mobile.market.Good" %>
 
 
 
@@ -52,7 +52,7 @@
 		<g:message code="good.pictures.label" default="Pictures" />
 		
 	</label>
-	<g:select name="pictures" from="${com.comtop.mobile.market.domain.GoodPicture.list()}" multiple="multiple" optionKey="id" size="5" value="${goodInstance?.pictures*.id}" class="many-to-many"/>
+	<g:select name="pictures" from="${com.comtop.mobile.market.GoodPicture.list()}" multiple="multiple" optionKey="id" size="5" value="${goodInstance?.pictures*.id}" class="many-to-many"/>
 
 </div>
 
@@ -106,7 +106,7 @@
 		<g:message code="good.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.domain.User.list()}" optionKey="id" required="" value="${goodInstance?.user?.id}" class="many-to-one"/>
+	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${goodInstance?.user?.id}" class="many-to-one"/>
 
 </div>
 

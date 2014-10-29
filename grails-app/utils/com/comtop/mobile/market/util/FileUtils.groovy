@@ -1,34 +1,27 @@
 package com.comtop.mobile.market.util
 
-class FileUtils {
-	//def config = new ConfigSlurper().parse(new File('grails-app/conf/market.groovy').toURL())
-	
-	private static FileUtils instance 
-	
-	public static FileUtils getInstance(){
-		if(instance ==null){
-			instance = new FileUtils()
-		}
-		instance
-	}
-	
-	
-	/**
-	 * 保存文件
-	 * 
-	 * @param original 原始文件
-	 * @param uuid 主键
-	 */
-	void saveFile(File original,String uuid){
-		println "sss $uuid"
-//		File saveFile = new File(config.images.save.path,uuid)
-//		original.transferTo(saveFile)
-	}
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.springframework.web.multipart.commons.CommonsMultipartFile
 
+class FileUtils {
+	
+	def grailsApplication
+	
 	/**
-	 * 获取文件
-	 * @param uuid 主键
-	 * @return 文件
+	 * 淇濆瓨鏂囦欢
+	 * 
+	 * @param original 鍘熷鏂囦欢
+	 * @param uuid 涓婚敭
+	 */
+	void saveFile(CommonsMultipartFile  original,String uuid){
+		println "sss $uuid"
+		File saveFile = new File(grailsApplication.config.images.save.path,uuid)
+		original.transferTo(saveFile)
+	}
+	/**
+	 * 鑾峰彇鏂囦欢
+	 * @param uuid 涓婚敭
+	 * @return 鏂囦欢
 	 */
 	File getFile(String uuid){
 		new File(config.images.save.path,uuid)

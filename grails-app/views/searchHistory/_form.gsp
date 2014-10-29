@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.SearchHistory" %>
+<%@ page import="com.comtop.mobile.market.SearchHistory" %>
 
 
 
@@ -25,7 +25,7 @@
 		<g:message code="searchHistory.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.domain.User.list()}" optionKey="id" required="" value="${searchHistoryInstance?.user?.id}" class="many-to-one"/>
+	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${searchHistoryInstance?.user?.id}" class="many-to-one"/>
 
 </div>
 

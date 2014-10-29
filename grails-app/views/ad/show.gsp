@@ -1,5 +1,5 @@
 
-<%@ page import="com.comtop.mobile.market.domain.Ad" %>
+<%@ page import="com.comtop.mobile.market.Ad" %>
 <!DOCTYPE html>
 <html>
 	<head>

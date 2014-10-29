@@ -1,5 +1,5 @@
 
-<%@ page import="com.comtop.mobile.market.domain.SearchHistory" %>
+<%@ page import="com.comtop.mobile.market.SearchHistory" %>
 <!DOCTYPE html>
 <html>
 	<head>

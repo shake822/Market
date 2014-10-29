@@ -1,5 +1,5 @@
 
-<%@ page import="com.comtop.mobile.market.domain.Favorites" %>
+<%@ page import="com.comtop.mobile.market.Favorites" %>
 <!DOCTYPE html>
 <html>
 	<head>

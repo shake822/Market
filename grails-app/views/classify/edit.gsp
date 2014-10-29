@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.Classify" %>
+<%@ page import="com.comtop.mobile.market.Classify" %>
 <!DOCTYPE html>
 <html>
 	<head>

@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.HotSearch" %>
+<%@ page import="com.comtop.mobile.market.HotSearch" %>
 <!DOCTYPE html>
 <html>
 	<head>

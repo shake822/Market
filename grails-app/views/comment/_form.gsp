@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.Comment" %>
+<%@ page import="com.comtop.mobile.market.Comment" %>
 
 
 
@@ -25,7 +25,7 @@
 		<g:message code="comment.fromUser.label" default="From User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="fromUser" name="fromUser.id" from="${com.comtop.mobile.market.domain.User.list()}" optionKey="id" required="" value="${commentInstance?.fromUser?.id}" class="many-to-one"/>
+	<g:select id="fromUser" name="fromUser.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${commentInstance?.fromUser?.id}" class="many-to-one"/>
 
 </div>
 
@@ -34,7 +34,7 @@
 		<g:message code="comment.good.label" default="Good" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.domain.Good.list()}" optionKey="id" required="" value="${commentInstance?.good?.id}" class="many-to-one"/>
+	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.Good.list()}" optionKey="id" required="" value="${commentInstance?.good?.id}" class="many-to-one"/>
 
 </div>
 
@@ -52,7 +52,7 @@
 		<g:message code="comment.toUser.label" default="To User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="toUser" name="toUser.id" from="${com.comtop.mobile.market.domain.User.list()}" optionKey="id" required="" value="${commentInstance?.toUser?.id}" class="many-to-one"/>
+	<g:select id="toUser" name="toUser.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${commentInstance?.toUser?.id}" class="many-to-one"/>
 
 </div>
 

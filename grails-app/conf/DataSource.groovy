@@ -19,7 +19,7 @@ environments {
     development {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql://10.10.5.227:3306/market?useUnicode=true&characterEncoding=utf-8"
+            url = "jdbc:mysql://127.0.0.1:3306/market?useUnicode=true&characterEncoding=utf-8"
 			driverClassName = "com.mysql.jdbc.Driver"
 			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 			username = "market"

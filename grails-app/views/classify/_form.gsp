@@ -1,4 +1,4 @@
-<%@ page import="com.comtop.mobile.market.domain.Classify" %>
+<%@ page import="com.comtop.mobile.market.Classify" %>
 
 
 
@@ -25,7 +25,7 @@
 		<g:message code="classify.parent.label" default="Parent" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="parent" name="parent.id" from="${com.comtop.mobile.market.domain.Classify.list()}" optionKey="id" required="" value="${classifyInstance?.parent?.id}" class="many-to-one"/>
+	<g:select id="parent" name="parent.id" from="${com.comtop.mobile.market.Classify.list()}" optionKey="id" required="" value="${classifyInstance?.parent?.id}" class="many-to-one"/>
 
 </div>
 
