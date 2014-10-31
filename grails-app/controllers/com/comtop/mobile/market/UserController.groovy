@@ -3,105 +3,123 @@ package com.comtop.mobile.market
 
 
 import static org.springframework.http.HttpStatus.*
-
-import com.comtop.mobile.market.User;
-
 import grails.transaction.Transactional
+
+import com.comtop.mobile.utils.EIPUser
+
 
 @Transactional(readOnly = true)
 class UserController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()]
-    }
+	@Transactional
+	def initFromEIP(){
+		EIPUser users = new EIPUser()
+		users.getAllUsers().each(){ it.save flush:true }
+	}
 
-    def show(User userInstance) {
-        respond userInstance
-    }
+	def index(Integer max) {
+		params.max = Math.min(max ?: 10, 100)
+		respond User.list(params), model:[userInstanceCount: User.count()]
+	}
 
-    def create() {
-        respond new User(params)
-    }
+	def show(User userInstance) {
+		respond userInstance
+	}
 
-    @Transactional
-    def save(User userInstance) {
-        if (userInstance == null) {
-            notFound()
-            return
-        }
+	def create() {
+		respond new User(params)
+	}
 
-        if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'create'
-            return
-        }
+	@Transactional
+	def save(User userInstance) {
+		if (userInstance == null) {
+			notFound()
+			return
+		}
 
-        userInstance.save flush:true
+		if (userInstance.hasErrors()) {
+			respond userInstance.errors, view:'create'
+			return
+		}
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect userInstance
-            }
-            '*' { respond userInstance, [status: CREATED] }
-        }
-    }
+		userInstance.save flush:true
 
-    def edit(User userInstance) {
-        respond userInstance
-    }
+		request.withFormat {
+			form multipartForm {
+				flash.message = message(code: 'default.created.message', args: [
+					message(code: 'user.label', default: 'User'),
+					userInstance.id
+				])
+				redirect userInstance
+			}
+			'*' { respond userInstance, [status: CREATED] }
+		}
+	}
 
-    @Transactional
-    def update(User userInstance) {
-        if (userInstance == null) {
-            notFound()
-            return
-        }
+	def edit(User userInstance) {
+		respond userInstance
+	}
 
-        if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'edit'
-            return
-        }
+	@Transactional
+	def update(User userInstance) {
+		if (userInstance == null) {
+			notFound()
+			return
+		}
 
-        userInstance.save flush:true
+		if (userInstance.hasErrors()) {
+			respond userInstance.errors, view:'edit'
+			return
+		}
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
-                redirect userInstance
-            }
-            '*'{ respond userInstance, [status: OK] }
-        }
-    }
+		userInstance.save flush:true
 
-    @Transactional
-    def delete(User userInstance) {
+		request.withFormat {
+			form multipartForm {
+				flash.message = message(code: 'default.updated.message', args: [
+					message(code: 'User.label', default: 'User'),
+					userInstance.id
+				])
+				redirect userInstance
+			}
+			'*'{ respond userInstance, [status: OK] }
+		}
+	}
 
-        if (userInstance == null) {
-            notFound()
-            return
-        }
+	@Transactional
+	def delete(User userInstance) {
 
-        userInstance.delete flush:true
+		if (userInstance == null) {
+			notFound()
+			return
+		}
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
+		userInstance.delete flush:true
 
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+		request.withFormat {
+			form multipartForm {
+				flash.message = message(code: 'default.deleted.message', args: [
+					message(code: 'User.label', default: 'User'),
+					userInstance.id
+				])
+				redirect action:"index", method:"GET"
+			}
+			'*'{ render status: NO_CONTENT }
+		}
+	}
+
+	protected void notFound() {
+		request.withFormat {
+			form multipartForm {
+				flash.message = message(code: 'default.not.found.message', args: [
+					message(code: 'user.label', default: 'User'),
+					params.id
+				])
+				redirect action: "index", method: "GET"
+			}
+			'*'{ render status: NOT_FOUND }
+		}
+	}
 }

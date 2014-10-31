@@ -23,6 +23,19 @@
 			</g:if>
 			<ol class="property-list ad">
 			
+				
+				
+				<g:if test="${adInstance?.imgName}">
+				<li class="fieldcontain">
+					<span id="imgName-label" class="property-label"><g:message code="ad.imgName.label" default="Img Path" /></span>
+						
+						<g:img uri="${request.contextPath}/image/index?uuid=${adInstance?.id}" height="200"  />
+						<span class="property-value" aria-labelledby="imgName-label"><g:fieldValue bean="${adInstance}" field="imgName"/></span>
+					
+				</li>
+				</g:if>
+				
+				
 				<g:if test="${adInstance?.description}">
 				<li class="fieldcontain">
 					<span id="description-label" class="property-label"><g:message code="ad.description.label" default="Description" /></span>
@@ -31,16 +44,8 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${adInstance?.imgName}">
-				<li class="fieldcontain">
-					<span id="imgName-label" class="property-label"><g:message code="ad.imgName.label" default="Img Path" /></span>
-					
-						<span class="property-value" aria-labelledby="imgName-label"><g:fieldValue bean="${adInstance}" field="imgName"/></span>
-					
-				</li>
-				</g:if>
-			
+				
+				
 				<g:if test="${adInstance?.indexOrder}">
 				<li class="fieldcontain">
 					<span id="indexOrder-label" class="property-label"><g:message code="ad.indexOrder.label" default="Index Order" /></span>

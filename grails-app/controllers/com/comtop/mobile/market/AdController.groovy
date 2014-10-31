@@ -3,17 +3,30 @@ package com.comtop.mobile.market
 
 
 import static org.springframework.http.HttpStatus.*
-
-import com.comtop.mobile.market.util.FileUtils;
-
+import grails.converters.JSON
 import grails.transaction.Transactional
+
 
 @Transactional(readOnly = true)
 class AdController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 	
 	def fileUtils 
+	
+	def getForMobile(Integer max){
+		params.max = Math.min(max ?: 10, 100)
+		def adList = Ad.list(params);
+		//request.contextPath+
+		String rootURL = "/image/index?uuid="
+		render(contentType: "text/json") {
+		  adList.collect(){
+			  [
+				  id: rootURL+it.id
+			  ]
+			}
+		}
+	}
 	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -40,7 +53,6 @@ class AdController {
             return
         }
 		def f = request.getFile('imgFile')
-		println f.getClass().getName()
 		adInstance.imgName = f.getOriginalFilename()
         adInstance.save flush:true
 		fileUtils.saveFile(f,adInstance.id)
@@ -68,9 +80,15 @@ class AdController {
             respond adInstance.errors, view:'edit'
             return
         }
-
-        adInstance.save flush:true
-
+		
+		def f = request.getFile('imgFile')
+		if(!f.isEmpty()){
+			adInstance.imgName = f.getOriginalFilename()
+			fileUtils.saveFile(f,adInstance.id)
+		}
+		adInstance.save flush:true
+		
+		
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Ad.label', default: 'Ad'), adInstance.id])
@@ -108,4 +126,6 @@ class AdController {
             '*'{ render status: NOT_FOUND }
         }
     }
+	
+	
 }

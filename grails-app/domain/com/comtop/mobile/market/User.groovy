@@ -1,28 +1,37 @@
 package com.comtop.mobile.market
 
+import groovy.transform.ToString;
+
+@ToString
 class User {
 	
-	/**ÓÃ»§Ãû*/
+	String id
+	
+	/**ç”¨æˆ·å*/
 	String username
 	
-	/**ÕËºÅ*/
+	/**è´¦å·*/
 	String account
 	
-	/**ÃÜÂë*/
+	/**å¯†ç */
 	String password
 	
-	/**µç»°*/
+	/**ç”µè¯*/
 	String phone
 	
-	/**²¿ÃÅ*/
+	/**éƒ¨é—¨*/
 	String department
 	
-	/**Í¼ÏñµØÖ·*/
+	/**å›¾åƒåœ°å€*/
 	String headImg
 	
-	/**µØÀíÎ»ÖÃ*/
+	/**åœ°ç†ä½ç½®*/
 	String address
 	
 	static constraints = {
+		phone(nullable: true)
+		department(nullable: true)
+		headImg(nullable: true)
+		address(nullable: true)
 	}
 }
