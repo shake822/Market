@@ -1,11 +1,13 @@
 <%@ page import="com.comtop.mobile.market.Classify" %>
 
-<div class="fieldcontain ${hasErrors(bean: classifyInstance, field: 'parent', 'error')} required">
+
+
+<div class="fieldcontain ${hasErrors(bean: classifyInstance, field: 'parent', 'error')} ">
 	<label for="parent">
 		<g:message code="classify.parent.label" default="Parent" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:select id="parent" name="parent.id" from="${com.comtop.mobile.market.Classify.findAllWhere(parent:com.comtop.mobile.market.Classify.findWhere(code:'-1'))}" optionKey="id" required="" value="${classifyInstance?.parent?.id}" class="many-to-one"/>
+	<g:select id="parent" name="parent.id" from="${com.comtop.mobile.market.Classify.list()}" optionValue="name" optionKey="id" value="${classifyInstance?.parent?.id}" class="many-to-one" noSelection="['null': '---']"/>
 
 </div>
 
@@ -24,8 +26,12 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:textField name="name" required="" value="${classifyInstance?.name}"/>
-
 </div>
 
-
-
+<div class="fieldcontain ${hasErrors(bean: classifyInstance, field: 'description', 'error')} required">
+	<label for="name">
+		<g:message code="classify.description.label" default="Description" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:textField name="description"   value="${classifyInstance?.description}"/>
+</div>

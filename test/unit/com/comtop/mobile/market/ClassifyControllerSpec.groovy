@@ -2,9 +2,6 @@ package com.comtop.mobile.market
 
 
 
-import com.comtop.mobile.market.Classify;
-import com.comtop.mobile.market.ClassifyController;
-
 import grails.test.mixin.*
 import spock.lang.*
 

@@ -23,6 +23,15 @@
 			</g:if>
 			<ol class="property-list classify">
 			
+				<g:if test="${classifyInstance?.parent}">
+				<li class="fieldcontain">
+					<span id="parent-label" class="property-label"><g:message code="classify.parent.label" default="Parent" /></span>
+					
+						<span class="property-value" aria-labelledby="parent-label"><g:link controller="classify" action="show" id="${classifyInstance?.parent?.id}">${classifyInstance?.parent?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${classifyInstance?.code}">
 				<li class="fieldcontain">
 					<span id="code-label" class="property-label"><g:message code="classify.code.label" default="Code" /></span>
@@ -37,15 +46,6 @@
 					<span id="name-label" class="property-label"><g:message code="classify.name.label" default="Name" /></span>
 					
 						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${classifyInstance}" field="name"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${classifyInstance?.parent}">
-				<li class="fieldcontain">
-					<span id="parent-label" class="property-label"><g:message code="classify.parent.label" default="Parent" /></span>
-					
-						<span class="property-value" aria-labelledby="parent-label"><g:link controller="classify" action="show" id="${classifyInstance?.parent?.id}">${classifyInstance?.parent?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

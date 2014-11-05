@@ -3,9 +3,6 @@ package com.comtop.mobile.market
 
 
 import static org.springframework.http.HttpStatus.*
-
-import com.comtop.mobile.market.Classify;
-
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
@@ -13,13 +10,6 @@ class ClassifyController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-	def init(){
-		Classify classify = new Classify()
-		classify.code="00"
-		classify.name="顶级"
-		classify.parent.id="-1"
-		classify.save  flush:true
-	}
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Classify.list(params), model:[classifyInstanceCount: Classify.count()]
