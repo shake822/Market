@@ -25,6 +25,7 @@ class ClassifyController {
 
     @Transactional
     def save(Classify classifyInstance) {
+		println classifyInstance?.parent?.id
         if (classifyInstance == null) {
             notFound()
             return

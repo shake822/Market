@@ -27,7 +27,7 @@
 				<li class="fieldcontain">
 					<span id="parent-label" class="property-label"><g:message code="classify.parent.label" default="Parent" /></span>
 					
-						<span class="property-value" aria-labelledby="parent-label"><g:link controller="classify" action="show" id="${classifyInstance?.parent?.id}">${classifyInstance?.parent?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="parent-label"><g:link controller="classify" action="show" id="${classifyInstance?.parent?.id}">${classifyInstance?.parent?.name}</g:link></span>
 					
 				</li>
 				</g:if>

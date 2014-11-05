@@ -27,7 +27,7 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:classifyInstance, action:'update']" method="PUT" >
+			<g:form url="[resource:classifyInstance, action:'update']" method="PUT"  onSubmit="onSubmit()">
 				<g:hiddenField name="version" value="${classifyInstance?.version}" />
 				<fieldset class="form">
 					<g:render template="form"/>
