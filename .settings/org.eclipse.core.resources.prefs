@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//grails-app/domain/com/comtop/mobile/market/User.groovy=UTF-8
 encoding//grails-app/i18n=UTF-8
 encoding//grails-app/i18n/messages.properties=UTF-8
 encoding//grails-app/i18n/messages_cs_CZ.properties=UTF-8
@@ -17,4 +18,8 @@ encoding//grails-app/i18n/messages_ru.properties=UTF-8
 encoding//grails-app/i18n/messages_sv.properties=UTF-8
 encoding//grails-app/i18n/messages_th.properties=UTF-8
 encoding//grails-app/i18n/messages_zh_CN.properties=UTF-8
+<<<<<<< HEAD
 encoding//grails-app/utils/com/comtop/mobile/market/util/FileUtils.groovy=UTF-8
+=======
+encoding/<project>=UTF-8
+>>>>>>> 382f79ab195df4672dfc6ef5a9063f84994ef826

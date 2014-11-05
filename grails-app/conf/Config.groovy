@@ -124,7 +124,7 @@ log4j.main = {
 	//    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
 	//}
 
-//	debug  'org.hibernate'
+	debug  'org.hibernate'
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
 			'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -135,6 +135,6 @@ log4j.main = {
 			'org.codehaus.groovy.grails.plugins',            // plugins
 			'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
 			'org.springframework',
-		           'org.hibernate',
+//		           'org.hibernate',
 			'net.sf.ehcache.hibernate'
 }

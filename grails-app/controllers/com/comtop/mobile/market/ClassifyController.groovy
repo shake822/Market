@@ -3,9 +3,6 @@ package com.comtop.mobile.market
 
 
 import static org.springframework.http.HttpStatus.*
-
-import com.comtop.mobile.market.Classify;
-
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)

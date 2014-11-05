@@ -1,4 +1,8 @@
 /.settings
 /target
 /target-eclipse
+<<<<<<< HEAD
 .classpath
+=======
+.classpath
+>>>>>>> 382f79ab195df4672dfc6ef5a9063f84994ef826

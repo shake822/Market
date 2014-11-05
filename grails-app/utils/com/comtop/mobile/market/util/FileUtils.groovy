@@ -1,12 +1,11 @@
 package com.comtop.mobile.market.util
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 
 class FileUtils {
-	
+
 	def grailsApplication
-	
+
 	/**
 	 * 保存文件
 	 * 
@@ -14,7 +13,6 @@ class FileUtils {
 	 * @param uuid 主键
 	 */
 	void saveFile(CommonsMultipartFile  original,String uuid){
-		println "sss $uuid"
 		File saveFile = new File(grailsApplication.config.images.save.path,uuid)
 		original.transferTo(saveFile)
 	}
@@ -24,14 +22,10 @@ class FileUtils {
 	 * @return 文件
 	 */
 	File getFile(String uuid){
-		new File(config.images.save.path,uuid)
+		File file = new File(grailsApplication.config.images.save.path,uuid)
+		if(!file.exists()){
+			file = new File(grailsApplication.config.images.save.path,"default")
+		}
+		file
 	}
-	/*
-	 private String getFileType(String fileName){
-	 int lastDot =fileName.lastIndexOf('.')
-	 if( lastDot>0){
-	 return fileName.substring(lastDot)
-	 }
-	 ".png"
-	 }*/
 }

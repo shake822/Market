@@ -24,24 +24,31 @@
 			<thead>
 					<tr>
 					
+						
+					
 						<g:sortableColumn property="code" title="${message(code: 'classify.code.label', default: 'Code')}" />
 					
 						<g:sortableColumn property="name" title="${message(code: 'classify.name.label', default: 'Name')}" />
-					
+						
+						<th><g:message code="classify.description" default="Description" /></th>
+						
 						<th><g:message code="classify.parent.label" default="Parent" /></th>
-					
+						
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${classifyInstanceList}" status="i" var="classifyInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
+						
+					
 						<td><g:link action="show" id="${classifyInstance.id}">${fieldValue(bean: classifyInstance, field: "code")}</g:link></td>
 					
 						<td>${fieldValue(bean: classifyInstance, field: "name")}</td>
-					
+						
 						<td>${fieldValue(bean: classifyInstance, field: "parent")}</td>
-					
+						
+						<td>${fieldValue(bean: classifyInstance, field: "description")}</td>
 					</tr>
 				</g:each>
 				</tbody>
