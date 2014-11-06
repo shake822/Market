@@ -8,11 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.hibernate.collection.internal.PersistentSet;
+
 import com.comtop.mobile.market.User;
 
 public class EIPUser {
 
 	public ArrayList<User> getAllUsers() {
+		PersistentSet s =null;
 		ArrayList<User> list = new ArrayList<User>();
 		ResultSet rs = null;
 		Statement stmt = null;

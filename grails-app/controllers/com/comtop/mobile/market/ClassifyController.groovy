@@ -14,7 +14,20 @@ class ClassifyController {
 	def getForMobile(Integer max){
 		params.max = Math.min(max ?: 10, 100)
 		def classifyList = Classify.list(params);
-		//request.contextPath+
+		//request.contextPath+	List<GoodPicture> pgList=[]
+		4.times {
+			def f = request.getFile('imgFile'+it)
+			if(!f.isEmpty()){
+				GoodPicture gp = new GoodPicture()
+				gp.imgName =  f.getOriginalFilename()
+				gp.indexOrder=it
+				gp.save flush:true
+				fileUtils.saveFile(f,gp.id)
+				pgList.add(gp)
+			}
+		}
+
+		goodInstance.pictures = pgList
 		render(contentType: "text/json") {
 		  classifyList.collect(){
 			  [
