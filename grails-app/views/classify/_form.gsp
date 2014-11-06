@@ -8,10 +8,18 @@
 			default="Parent" />
 
 	</label>
-	<g:select id="parent" onChange="onParentChange(this)" name="parent.id"
-		from="${com.comtop.mobile.market.Classify.findAllWhere(parent:null)}"
-		optionValue="name" value="${classifyInstance?.parent?.id}:${classifyInstance?.parent?.code}"
-		class="many-to-one" noSelection="['null': '---']" />
+	
+	<select id="parent" onchange="onParentChange(this)" name="parent.id" class="many-to-one"  value="${classifyInstance?.parent?.id}">
+		<option value="null">---</option>
+		<g:each in="${com.comtop.mobile.market.Classify.findAllWhere(parent:null)}" var="classifyItem">
+			<g:if test="${classifyInstance?.parent?.id == classifyItem.id}">
+			 	<option value="${classifyItem.id}" code="${classifyItem.code }" selected="selected"  >${classifyItem.name }</option>
+			</g:if>
+			<g:else>
+				<option value="${classifyItem.id}" code="${classifyItem.code }"  >${classifyItem.name }</option>
+			</g:else>
+		</g:each>
+	</select>
 
 </div>
 
@@ -20,7 +28,7 @@
 	<label for="code"> <g:message code="classify.code.label"
 			default="Code" /> <span class="required-indicator">*</span>
 	</label>
-	<g:textField name="code" required="" value="${classifyInstance?.code}" />
+	<g:textField name="code" maxlength="4"  required="" value="${classifyInstance?.code}" />
 
 </div>
 
@@ -43,16 +51,10 @@
 
 <script type="text/javascript">
 	function onParentChange(parent) {
-		if (parent.value !== "null" && parent.value.indexOf(":") > 0) {
-			var parentCode = parent.value.split(":")[1];
+		if (parent.value !== "null" ) {
+			var parentCode = $("option[value='"+parent.value+"']").attr("code");
 			var _code = $("#code");
 			_code.val(parentCode + _code.val());
-		}
-	}
-	function onSubmit() {
-		var _parent = $("#parent");
-		if (_parent.val().indexOf(":") > 0) {
-			_parent.val(_parent.val().split(":")[0]);
 		}
 	}
 </script>

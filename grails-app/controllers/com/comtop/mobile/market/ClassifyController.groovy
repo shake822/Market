@@ -9,7 +9,22 @@ import grails.transaction.Transactional
 class ClassifyController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	
+	
+	def getForMobile(Integer max){
+		params.max = Math.min(max ?: 10, 100)
+		def classifyList = Classify.list(params);
+		//request.contextPath+
+		render(contentType: "text/json") {
+		  classifyList.collect(){
+			  [
+				  name:it.name,
+				  code:it.code
+			  ]
+			}
+		}
+	}
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Classify.list(params), model:[classifyInstanceCount: Classify.count()]
@@ -40,7 +55,7 @@ class ClassifyController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'classify.label', default: 'Classify'), classifyInstance.id])
+                flash.message = message(code: 'default.created.message', args: [message(code: 'classify.label', default: 'Classify'), classifyInstance.name])
                 redirect classifyInstance
             }
             '*' { respond classifyInstance, [status: CREATED] }
@@ -67,7 +82,7 @@ class ClassifyController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Classify.label', default: 'Classify'), classifyInstance.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'classify.label', default: 'Classify'), classifyInstance.name])
                 redirect classifyInstance
             }
             '*'{ respond classifyInstance, [status: OK] }
@@ -86,7 +101,7 @@ class ClassifyController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Classify.label', default: 'Classify'), classifyInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'classify.label', default: 'Classify'), classifyInstance.name])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

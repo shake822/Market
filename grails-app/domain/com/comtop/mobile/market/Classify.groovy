@@ -1,6 +1,9 @@
 package com.comtop.mobile.market
 
+import groovy.transform.ToString
 
+
+@ToString
 class Classify {
 
 	String id
@@ -10,11 +13,8 @@ class Classify {
 	static  belongsTo =[parent:Classify]
 	static mapping={ parent cascade :"none" }
 	static constraints = {
-		code(maxLength:4)
+		code(maxSize:4)
 		parent(nullable:true)
 		description(nullable:true)
-	}
-	String toString(){
-		"$id:$code"
 	}
 }

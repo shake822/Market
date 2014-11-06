@@ -128,7 +128,7 @@
 				<li class="fieldcontain">
 					<span id="user-label" class="property-label"><g:message code="good.user.label" default="User" /></span>
 					
-						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${goodInstance?.user?.id}">${goodInstance?.user?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${goodInstance?.user?.id}">${goodInstance?.user?.username}</g:link></span>
 					
 				</li>
 				</g:if>

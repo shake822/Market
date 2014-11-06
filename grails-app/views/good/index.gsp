@@ -23,18 +23,20 @@
 			<table>
 			<thead>
 					<tr>
-					
-						<g:sortableColumn property="code" title="${message(code: 'good.code.label', default: 'Code')}" />
-					
-						<g:sortableColumn property="createTime" title="${message(code: 'good.createTime.label', default: 'Create Time')}" />
-					
-						<g:sortableColumn property="deleteFlag" title="${message(code: 'good.deleteFlag.label', default: 'Delete Flag')}" />
-					
-						<g:sortableColumn property="description" title="${message(code: 'good.description.label', default: 'Description')}" />
-					
-						<g:sortableColumn property="name" title="${message(code: 'good.name.label', default: 'Name')}" />
-					
+						
+						<th>${message(code: 'good.name.label', default: 'Name')}</th>
+						
+						<th>${message(code: 'good.code.label', default: 'Code')}</th>
+						
 						<g:sortableColumn property="price" title="${message(code: 'good.price.label', default: 'Price')}" />
+						
+						
+						<th>${message(code: 'good.recency.label', default: 'Recency')}</th>
+						
+						
+						<g:sortableColumn property="state" title="${message(code: 'good.state.label', default: 'State')}" />
+						
+						<g:sortableColumn property="createTime" title="${message(code: 'good.createTime.label', default: 'Create Time')}" />
 					
 					</tr>
 				</thead>
@@ -42,17 +44,20 @@
 				<g:each in="${goodInstanceList}" status="i" var="goodInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${goodInstance.id}">${fieldValue(bean: goodInstance, field: "code")}</g:link></td>
+						<td><g:link action="show" id="${goodInstance.id}">${fieldValue(bean: goodInstance, field: "name")}</g:link></td>
 					
+						<td>${fieldValue(bean: goodInstance, field: "code")}</td>
+						
+						
+						<td>${fieldValue(bean: goodInstance, field: "price")}</td>
+						
+						<td>${fieldValue(bean: goodInstance, field: "recency")}</td>
+						
+						
+						<td>${fieldValue(bean: goodInstance, field: "state")}</td>
+						
 						<td><g:formatDate date="${goodInstance.createTime}" /></td>
 					
-						<td><g:formatBoolean boolean="${goodInstance.deleteFlag}" /></td>
-					
-						<td>${fieldValue(bean: goodInstance, field: "description")}</td>
-					
-						<td>${fieldValue(bean: goodInstance, field: "name")}</td>
-					
-						<td>${fieldValue(bean: goodInstance, field: "price")}</td>
 					
 					</tr>
 				</g:each>

@@ -1,42 +1,5 @@
 <%@ page import="com.comtop.mobile.market.Good" %>
-
-
-
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'code', 'error')} required">
-	<label for="code">
-		<g:message code="good.code.label" default="Code" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:textField name="code" required="" value="${goodInstance?.code}"/>
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'createTime', 'error')} required">
-	<label for="createTime">
-		<g:message code="good.createTime.label" default="Create Time" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:datePicker name="createTime" precision="day"  value="${goodInstance?.createTime}"  />
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'deleteFlag', 'error')} ">
-	<label for="deleteFlag">
-		<g:message code="good.deleteFlag.label" default="Delete Flag" />
-		
-	</label>
-	<g:checkBox name="deleteFlag" value="${goodInstance?.deleteFlag}" />
-
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'description', 'error')} required">
-	<label for="description">
-		<g:message code="good.description.label" default="Description" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:textField name="description" required="" value="${goodInstance?.description}"/>
-
-</div>
+<%@ page import="com.comtop.mobile.market.Classify" %>
 
 <div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'name', 'error')} required">
 	<label for="name">
@@ -47,22 +10,24 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'pictures', 'error')} ">
-	<label for="pictures">
-		<g:message code="good.pictures.label" default="Pictures" />
-		
+<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'description', 'error')} required">
+	<label for="description">
+		<g:message code="good.description.label" default="Description" />
+		<span class="required-indicator">*</span>
 	</label>
-	<g:select name="pictures" from="${com.comtop.mobile.market.GoodPicture.list()}" multiple="multiple" optionKey="id" size="5" value="${goodInstance?.pictures*.id}" class="many-to-many"/>
+	<g:textArea name="description" required="" rows="3" value="${goodInstance?.description}"/>
 
 </div>
+
+
+
 
 <div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'price', 'error')} required">
 	<label for="price">
 		<g:message code="good.price.label" default="Price" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="price" value="${fieldValue(bean: goodInstance, field: 'price')}" required=""/>
-
+	<g:field name="price" type="number" value="${fieldValue(bean: goodInstance, field: 'price')}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'recency', 'error')} required">
@@ -70,8 +35,7 @@
 		<g:message code="good.recency.label" default="Recency" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="recency" required="" value="${goodInstance?.recency}"/>
-
+	<g:select name="recency"  required="" value="${goodInstance?.recency}" from="${['全新', '九成', '八成', '七成', '六成']}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'state', 'error')} required">
@@ -88,25 +52,33 @@
 		<g:message code="good.type.label" default="Type" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="type" required="" value="${goodInstance?.type}"/>
-
+	<g:select name="type"  required="" optionKey="code" optionValue="name" value="${goodInstance?.type}" from="${Classify.list() }"/>
 </div>
-
-<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'updateTime', 'error')} required">
-	<label for="updateTime">
-		<g:message code="good.updateTime.label" default="Update Time" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:datePicker name="updateTime" precision="day"  value="${goodInstance?.updateTime}"  />
-
-</div>
+ 
 
 <div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'user', 'error')} required">
 	<label for="user">
 		<g:message code="good.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${goodInstance?.user?.id}" class="many-to-one"/>
+	<g:select id="user" name="user.id"  from="${com.comtop.mobile.market.User.list()}" optionKey="id" optionValue="username" required="" value="${goodInstance?.user?.id}" class="many-to-one"/>
+
+</div>
+
+
+<div class="fieldcontain ${hasErrors(bean: goodInstance, field: 'user', 'error')}">
+	<label for="user">
+		<g:message code="good.pictures.label" default="Pictures" />
+	</label>
+	
+	<g:each in="${[0,1,2,3] }" var="index" >
+		<g:set var="pictureItem" value="${ goodInstance?.pictures?.getAt(index)]}"></g:set>
+		<g:img onclick="clickImg()"  id="showImg${index}"
+		uri="${request.contextPath}/image/index?uuid=${pictureItem?.id}"
+		height="200" />
+		<input type="file" style="display: none;" name="imgFile${index.index}" id="imgFile${index.index}"
+		accept=".png,.jpg" value="${pictureItem?.imgName}" />
+	</g:each>
 
 </div>
 

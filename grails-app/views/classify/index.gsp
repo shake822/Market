@@ -52,26 +52,30 @@
 					var="classifyInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						
-						<td>
-							${fieldValue(bean: classifyInstance, field: "name")}
-						</td>
 						
 						
 						<g:if test="${classifyInstance?.parent}">
 							<td><g:link action="show" id="${classifyInstance.id}">
-									${fieldValue(bean: classifyInstance, field: "code")}
+									${fieldValue(bean: classifyInstance, field: "name")}
 								</g:link></td>
 						</g:if>
 						<g:else>
-							<td>${fieldValue(bean: classifyInstance, field: "code")}</td>
+							<td>${fieldValue(bean: classifyInstance, field: "name")}</td>
 						</g:else>
-		
+						
+						
+						<td>
+							${fieldValue(bean: classifyInstance, field: "code")}
+						</td>
+						
+						
+						
 						<td>
 							${fieldValue(bean: classifyInstance, field: "description")}
 						</td>
 
 						<td>
-							${fieldValue(bean: classifyInstance, field: "parent")}
+							${fieldValue(bean: classifyInstance, field: "parent.name")}
 						</td>
 
 						

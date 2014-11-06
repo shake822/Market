@@ -32,8 +32,13 @@ class GoodController {
             notFound()
             return
         }
-
+		goodInstance.code="xxx"
+		goodInstance.createTime = new Date()
+		goodInstance.updateTime = new Date()
+		println "----------zz"
+		println goodInstance
         if (goodInstance.hasErrors()) {
+			println goodInstance.errors
             respond goodInstance.errors, view:'create'
             return
         }
