@@ -34,8 +34,18 @@
 					
 				</li>
 				</g:if>
-				
-				
+
+
+				<g:if test="${adInstance?.imgAction}">
+					<li class="fieldcontain">
+						<span id="imgAction-label" class="property-label"><g:message code="ad.imgAction.label" default="ImgAction" /></span>
+
+						<span class="property-value" aria-labelledby="imgAction-label"><g:fieldValue bean="${adInstance}" field="imgAction"/></span>
+
+					</li>
+				</g:if>
+
+
 				<g:if test="${adInstance?.description}">
 				<li class="fieldcontain">
 					<span id="description-label" class="property-label"><g:message code="ad.description.label" default="Description" /></span>

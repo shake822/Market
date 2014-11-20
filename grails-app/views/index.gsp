@@ -18,7 +18,6 @@
 				-webkit-border-radius: 0.6em;
 				border-radius: 0.6em;
 			}
-
 			.ie6 #status {
 				display: inline; /* float double margin fix http://www.positioniseverything.net/explorer/doubled-margin.html */
 			}
@@ -78,6 +77,29 @@
 					margin-top: 0;
 				}
 			}
+
+			.doc-table {
+				border-collapse: collapse;
+				border-spacing: 0;
+				margin-left: 9px;
+				width:99%;
+				word-break:break-all;
+			}
+			.doc-table th, .doc-table td {
+				border: 1px solid #ccc;
+				padding: 0.3em 0.7em;
+			}
+			.doc-table th {
+				background: none repeat scroll 0 0 #EEEEEE;
+			}
+			.doc-table pre {
+				background: none repeat scroll 0 0 #FAFAFA;
+				color: #006600;
+				font-family: Verdana;
+				font-size: 12px;
+				padding: 5px;
+			}
+
 		</style>
 	</head>
 	<body>
@@ -109,11 +131,121 @@
 			   content you may choose. Below is a list of controllers that are currently deployed in this application,
 			   click on each to execute its default action:</p>
 			<div id="controller-list" role="navigation">
+				<table class="doc-table" >
+					<tbody>
+					<tr>
+						<th ><strong>JSON通用格式:</strong></th>
+					</tr>
+					<tr>
+						<td>
+							code：1表示成功；-1表示失败<br>
+							msg: 成功或失败的消息<br>
+							body:code为1时额外的业务信息
+						</td>
+					</tr>
+					</tbody>
+				</table>
 				<h2>修改完成的功能:</h2>
 				<ul>
 					<li class="controller"><g:link controller="ad">${message(code: 'ad.label', default: 'Ad')}</g:link></li>
+					<ul style="margin-left: 50px">
+						<li>获取广告列表url:<g:link controller="ad" action="mGet">ad/mGet</g:link></li>
+						<table class="doc-table" >
+							<tbody>
+							<tr>
+								<th><strong>入参</strong></th>
+								<th ><strong>返回</strong></th>
+							</tr>
+							<tr>
+								<td>
+									无
+								</td>
+								<td>
+									body:<br>
+									[<br>{"id":"8a8ab2ec496065050149609ea6620e4f","url":"/image/index?uuid=8a8ab2ec496065050149609ea6620e4f","action":""},<br>{"id":"8a8ab2ec496065050149609ea6620e4f","url":"/image/index?uuid=8a8ab2ec496065050149609ea6620e4f","action":""}<br>]
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</ul>
 					<li class="controller"><g:link controller="classify">${message(code: 'classify.label', default: 'Classify')}</g:link></li>
+					<ul style="margin-left: 50px">
+						<li>获取分类url:<g:link controller="classify" action="mGet">classify/mGet</g:link></li>
+						<table class="doc-table" >
+							<tbody>
+							<tr>
+								<th><strong>入参</strong></th>
+								<th ><strong>返回</strong></th>
+							</tr>
+							<tr>
+								<td>
+									无
+								</td>
+								<td>
+									body:<br>
+									[<br>{"name":"数码产品","id":"8a8ab2ec4998a169014998aa05870007"},<br>{"name":"食品饮料","id":"8a8ab2ec4998a169014998aa058c0008"}<br>]
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</ul>
 					<li class="controller"><g:link controller="good">${message(code: 'good.label', default: 'Good')}</g:link></li>
+					<li class="controller"><g:link controller="login">登录</g:link></li>
+					<ul style="margin-left: 50px">
+						<li>登录:<g:link controller="login" action="mLogin">login/mLogin</g:link></li>
+						<table class="doc-table" >
+							<tbody>
+							<tr>
+								<th><strong>入参</strong></th>
+								<th ><strong>返回</strong></th>
+							</tr>
+							<tr>
+								<td>
+									account :账号 <br>
+									password:密码(32位MD5加密后的大写)
+								</td>
+								<td>
+									body：{<br>"id":"8a8ab2ec496065050149606f1790099a",<br>"account":"zhaoqunqi",<br>"address":null,<br>
+									"department":null,<br>"headImg":null,<br>"password":"C33367701511B4F6020EC61DED352059",<br>"phone":null,<br>"username":"赵群齐"<br>}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<li>登出:<g:link controller="login" action="mLogout">login/mLogout</g:link></li>
+						<table class="doc-table" >
+							<tbody>
+							<tr>
+								<th><strong>入参</strong></th>
+								<th><strong>返回</strong></th>
+							</tr>
+							<tr>
+								<td>
+									无
+								</td>
+								<td>
+									msg:"登出成功"
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<li>获取用户信息:<g:link controller="login" action="mGetUserInfo">login/mGetUserInfo</g:link></li>
+						<table class="doc-table" >
+							<tbody>
+							<tr>
+								<th><strong>入参</strong></th>
+								<th ><strong>返回</strong></th>
+							</tr>
+							<tr>
+								<td>
+									无
+								</td>
+								<td>
+									同登录返回结果
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</ul>
 				</ul>
 			</div>
 			

@@ -11,3 +11,7 @@
 *= require mobile
 *= require_self
 */
+html, body {
+    font-size: 14px;
+    font-family: "Microsoft YaHei UI","Microsoft YaHei";
+}

@@ -1,5 +1,6 @@
 package com.comtop.mobile.market
 
+import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -11,6 +12,40 @@ class LoginController {
 
 	def index() {
 		render(view:"/login")
+	}
+	def mLogin(){
+		String account = params["account"]
+		String password = params["password"]
+		User user = User.findWhere(account:"$account",password:"$password")
+		if(user ==null){
+			render JsonHelper.onError("账号或密码错误")
+		}else{
+			session.user = user
+			render JsonHelper.onSuccessBody("${user as JSON}")
+		}
+	}
+
+	/**
+	 * 登出
+	 * @return
+	 */
+	def mLogout(){
+		session.invalidate()
+		render JsonHelper.onSuccessMessage("登出成功")
+	}
+
+	/**
+	 * 获取用户信息
+	 * @return
+	 */
+	def mGetUserInfo(){
+		User user = session.user
+		if(user != null){
+			render JsonHelper.onSuccessBody("${user as JSON}")
+		}else{
+			render JsonHelper.onError("您还没有登录")
+		}
+
 	}
 	def login(){
 		String account = params["account"]

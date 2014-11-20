@@ -1,6 +1,7 @@
 package com.comtop.mobile.market
 
-
+import com.comtop.mobile.market.util.JsonHelper
+import grails.converters.JSON
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -9,33 +10,22 @@ import grails.transaction.Transactional
 class ClassifyController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-	
-	
-	def getForMobile(Integer max){
+
+    /**
+     * 获取分类信息
+     * @param max 记录数
+     * @return json
+     */
+	def mGet(Integer max){
 		params.max = Math.min(max ?: 10, 100)
 		def classifyList = Classify.list(params);
-		//request.contextPath+	List<GoodPicture> pgList=[]
-		4.times {
-			def f = request.getFile('imgFile'+it)
-			if(!f.isEmpty()){
-				GoodPicture gp = new GoodPicture()
-				gp.imgName =  f.getOriginalFilename()
-				gp.indexOrder=it
-				gp.save flush:true
-				fileUtils.saveFile(f,gp.id)
-				pgList.add(gp)
-			}
-		}
-
-		goodInstance.pictures = pgList
-		render(contentType: "text/json") {
-		  classifyList.collect(){
-			  [
-				  name:it.name,
-				  code:it.code
-			  ]
-			}
-		}
+        def data = classifyList.collect(){
+            [
+                    name:it.name,
+                    id:it.id
+            ]
+        }  as JSON
+		render JsonHelper.onSuccessBody("${data}")
 	}
 	
     def index(Integer max) {

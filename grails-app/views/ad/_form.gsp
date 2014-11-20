@@ -27,6 +27,14 @@
 	<g:hiddenField  type="string" name="imgName" value="${adInstance?.imgName}" />
 </div>
 
+<div
+		class="fieldcontain ${hasErrors(bean: adInstance, field: 'imgAction', 'error')} ">
+	<label for="imgAction"> <g:message
+			code="ad.imgAction.label" default="ImgAction" />
+	</label>
+	<g:field  name="imgAction" type="string"
+				value="${adInstance?.imgAction}" />
+</div>
 
 <div
 	class="fieldcontain ${hasErrors(bean: adInstance, field: 'description', 'error')} ">

@@ -2,7 +2,7 @@ package com.comtop.mobile.market
 
 import groovy.transform.ToString;
 
-@ToString
+@ToString(excludes = "class,password")
 class User {
 	
 	String id
