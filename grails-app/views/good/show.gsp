@@ -51,12 +51,12 @@
 							bean="${goodInstance}" field="code" /></span></li>
 			</g:if>
 
-			<g:if test="${goodInstance?.state}">
-				<li class="fieldcontain"><span id="state-label"
-					class="property-label"><g:message code="good.state.label"
-							default="State" /></span> <span class="property-value"
-					aria-labelledby="state-label"><g:fieldValue
-							bean="${goodInstance}" field="state" /></span></li>
+			<g:if test="${goodInstance?.status}">
+				<li class="fieldcontain"><span id="status-label"
+					class="property-label"><g:message code="good.status.label"
+							default="Status" /></span> <span class="property-value"
+					aria-labelledby="status-label"><g:fieldValue
+							bean="${goodInstance}" field="status" /></span></li>
 			</g:if>
 
 
@@ -85,12 +85,12 @@
 							bean="${goodInstance}" field="recency" /></span></li>
 			</g:if>
 
-			<g:if test="${goodInstance?.type}">
-				<li class="fieldcontain"><span id="type-label"
-					class="property-label"><g:message code="good.type.label"
-							default="Type" /></span> <span class="property-value"
-					aria-labelledby="type-label"><g:fieldValue
-							bean="${goodInstance}" field="type" /></span></li>
+			<g:if test="${goodInstance?.classify}">
+				<li class="fieldcontain"><span id="classify-label"
+					class="property-label"><g:message code="good.classify.label"
+							default="Classify" /></span> <span class="property-value"
+					aria-labelledby="classify-label"><g:fieldValue
+							bean="${goodInstance}" field="classify" /></span></li>
 			</g:if>
 
 			<g:if test="${goodInstance?.user}">

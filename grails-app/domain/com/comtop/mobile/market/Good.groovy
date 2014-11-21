@@ -7,8 +7,8 @@ class Good {
     String id
     String name
     String description
-    String type
-    String state
+    String classify
+    String status
     float price
     String code
     String recency

@@ -43,21 +43,20 @@
 </div>
 
 <div
-	class="fieldcontain ${hasErrors(bean: goodInstance, field: 'state', 'error')} required">
-	<label for="state"> <g:message code="good.state.label"
-			default="State" /> <span class="required-indicator">*</span>
+	class="fieldcontain ${hasErrors(bean: goodInstance, field: 'status', 'error')} required">
+	<label for="status"> <g:message code="good.status.label"
+			default="Status" /> <span class="required-indicator">*</span>
 	</label>
-	<g:textField name="state" required="" value="${goodInstance?.state}" />
-
+	<g:select name="status"  optionKey="key"  value="${goodInstance?.status}" optionValue="value"  from="${}" />
 </div>
 
 <div
-	class="fieldcontain ${hasErrors(bean: goodInstance, field: 'type', 'error')} required">
-	<label for="type"> <g:message code="good.type.label"
-			default="Type" /> <span class="required-indicator">*</span>
+	class="fieldcontain ${hasErrors(bean: goodInstance, field: 'classify', 'error')} required">
+	<label for="classify"> <g:message code="good.classify.label"
+			default="Classify" /> <span class="required-indicator">*</span>
 	</label>
-	<g:select name="type" required="" optionKey="code" optionValue="name"
-		value="${goodInstance?.type}" from="${Classify.list() }" />
+	<g:select name="classify" required="" optionKey="name" optionValue="name"
+		value="${goodInstance?.classify}" from="${Classify.list() }" />
 </div>
 
 

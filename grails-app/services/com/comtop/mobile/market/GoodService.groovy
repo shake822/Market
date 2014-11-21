@@ -15,31 +15,37 @@ class GoodService {
      * @param type 类型
      * @return true:还有更多记录;fasle:没有更多记录
      */
-    def find(int pageSize, int currentPage, String type) {
+    def findAll(int pageSize, int currentPage, String status) {
         println "${pageSize}   ${currentPage}"
         def returnMap = [:]
         def params = [:]
-        params.fetchSize = pageSize + 1
+        params.max = pageSize + 1
         params.order = "desc"
         params.sort = "createTime"
         params.offset = (currentPage - 1) * pageSize
         params.fetch = [pictures: "join"]
 //        params.pictures =[indexOrder:0]
-        println params
 //        def c = Good.createCriteria()
 //        def list = c.list(params){
 //            pictures{
 //                sqlRestriction "id =xxxx"
 //            }
 //        }
-        println "xxxxx"
 //        def list = Good.withCriteria {
 //            fetchMode "pictures", FetchMode.JOIN
 //            pictures(CriteriaSpecification.) {
 //                eq "id", "b"
 //            }
 //        }
-        def list = Good.list(params)
+//        def list = Good.findWhere(params)
+//        def goodC = Good.createCriteria()
+//        def list = goodC.list(params) {
+//            eq("type","${type}")
+//        }
+
+        def list = Good.findAll(params) {
+            eq("status", "${status}")
+        }
         println "${list.size()}"
         returnMap.hasMore = (list.size() == pageSize + 1)
         if (list.size() == pageSize + 1) {
@@ -48,12 +54,17 @@ class GoodService {
         } else {
             returnMap.hasMore = false
         }
-
-
         returnMap.data = list.collect()
                 {
+                    def pictureId = null
+                    it.pictures?.each() {
+                        if (it.indexOrder == 0) {
+                            pictureId = ConstantUtils.IMAGE_URL + it.id
+                            return
+                        }
+                    }
                     [
-                            type       : it.type,
+                            classify   : it.classify,
                             userId     : it.userId,
                             description: it.description,
                             deleteFlag : it.deleteFlag,
@@ -61,13 +72,9 @@ class GoodService {
                             price      : it.price,
                             recency    : it.recency,
                             createTime : it.createTime,
-                            state      : it.state,
+                            status     : it.status,
                             code       : it.code,
-                            pictures   : it.pictures?.size() > 0 ? it.pictures.each {
-                                if (it.indexOrder == 0) {
-                                    it.id
-                                }
-                            } : null
+                            picture    : pictureId
                     ]
                 }
         returnMap

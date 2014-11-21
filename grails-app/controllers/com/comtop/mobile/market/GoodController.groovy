@@ -1,6 +1,7 @@
 package com.comtop.mobile.market
 
 import com.comtop.mobile.market.util.FileUtils
+import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
 import grails.transaction.Transactional
 import org.hibernate.collection.internal.PersistentSet
@@ -29,12 +30,12 @@ class GoodController {
      *
      * @param pageSize
      * @param currentPage
-     * @param type
+     * @param status
      */
-    def mFind(int pageSize,int currentPage,String type){
+    def mFind(int pageSize,int currentPage,String status){
         def data
-        data = goodService.find(pageSize, currentPage, type)
-        render(data as JSON)
+        data = goodService.findAll(pageSize, currentPage, status) as JSON
+        render JsonHelper.onSuccessBody("${data}")
     }
 
     def mSave(){
@@ -47,6 +48,10 @@ class GoodController {
 
     def mDelete(){
 
+    }
+
+    def getGoodStatus(){
+        [[key:1,value:'交换'],[key:0,value:'出售'],[key:2,value:'求购']]
     }
 
     def index(Integer max) {
