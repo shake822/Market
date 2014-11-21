@@ -34,7 +34,7 @@
 						<th>${message(code: 'good.recency.label', default: 'Recency')}</th>
 						
 						
-						<g:sortableColumn property="state" title="${message(code: 'good.state.label', default: 'State')}" />
+						<g:sortableColumn property="status" title="${message(code: 'good.status.label', default: 'Status')}" />
 						
 						<g:sortableColumn property="createTime" title="${message(code: 'good.createTime.label', default: 'Create Time')}" />
 					
@@ -54,7 +54,7 @@
 						<td>${fieldValue(bean: goodInstance, field: "recency")}</td>
 						
 						
-						<td>${fieldValue(bean: goodInstance, field: "state")}</td>
+						<td>${fieldValue(bean: goodInstance, field: "status")}</td>
 						
 						<td><g:formatDate date="${goodInstance.createTime}" /></td>
 					
