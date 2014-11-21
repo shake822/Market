@@ -5,3 +5,6 @@ target-eclipse/
 .svn/
 .idea/
 out/
+Market-grailsPlugins.iml
+Market.iml
+
