@@ -39,8 +39,8 @@ grails.project.dependency.resolution = {
 		grailsHome()
 		mavenLocal()
 		grailsCentral()
-//		mavenCentral()
- 		mavenRepo "http://10.10.50.10:8080/nexus/content/groups/public"
+		mavenCentral()
+// 		mavenRepo "http://10.10.50.10:8080/nexus/content/groups/public"
 		// uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
 		//mavenRepo "http://repository.codehaus.org"
 		//mavenRepo "http://download.java.net/maven/2/"

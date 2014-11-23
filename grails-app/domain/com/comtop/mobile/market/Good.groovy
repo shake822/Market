@@ -9,7 +9,7 @@ class Good {
     String description
     String classify
     String status
-    float price
+    int price
     String code
     String recency
     boolean deleteFlag

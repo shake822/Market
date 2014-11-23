@@ -1,6 +1,6 @@
 package com.comtop.mobile.market
 
-import com.comtop.mobile.market.util.ConstantUtils
+import com.comtop.mobile.market.util.ConstantGroovyUtils
 import com.comtop.mobile.market.util.JsonHelper
 
 import static org.springframework.http.HttpStatus.*
@@ -26,7 +26,7 @@ class AdController {
         def data =  adList.collect() {
             [
                     id: it.id,
-                    url: ConstantUtils.IMAGE_URL + it.id,
+                    url: ConstantGroovyUtils.IMAGE_URL + it.id,
                     action:it.imgAction
             ]
         } as JSON

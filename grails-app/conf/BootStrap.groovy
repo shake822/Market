@@ -1,4 +1,6 @@
 import com.comtop.mobile.market.Good
+import com.comtop.mobile.market.GoodPicture
+import com.comtop.mobile.market.User
 import com.comtop.mobile.utils.CustomDomainMarshaller
 import grails.converters.JSON
 
@@ -15,8 +17,15 @@ class BootStrap {
         grails.converters.JSON.registerObjectMarshaller(Good) {
             return it.properties.findAll { k, v -> k != 'class' }
         }
-    }
 
+        grails.converters.JSON.registerObjectMarshaller(GoodPicture) {
+            return it.properties.findAll { k, v -> k != 'class' }
+        }
+
+        grails.converters.JSON.registerObjectMarshaller(User) {
+            return it.properties.findAll { k, v -> k != 'class' }
+        }
+    }
     def destroy = {
     }
 }

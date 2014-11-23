@@ -51,12 +51,11 @@
 						
 						<td>${fieldValue(bean: goodInstance, field: "price")}</td>
 						
-						<td>${fieldValue(bean: goodInstance, field: "recency")}</td>
+						<td>${flash.goodRecency.get(new Integer(goodInstance.recency))}</td>
 						
-						
-						<td>${fieldValue(bean: goodInstance, field: "status")}</td>
-						
-						<td><g:formatDate date="${goodInstance.createTime}" /></td>
+						<td>${flash.goodStatus.get(new Integer(goodInstance.status))}</td>
+
+						<td><g:formatDate format="yyyy-MM-dd HH:mm:ss" date="${goodInstance.createTime}" /></td>
 					
 					
 					</tr>

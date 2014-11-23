@@ -1,10 +1,11 @@
 package com.comtop.mobile.market
 
+import com.comtop.mobile.market.util.ConstantGroovyUtils
+import com.comtop.mobile.market.util.ConstantUtils
 import com.comtop.mobile.market.util.FileUtils
 import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
 import grails.transaction.Transactional
-import org.hibernate.collection.internal.PersistentSet
 
 import static org.springframework.http.HttpStatus.*
 
@@ -21,9 +22,9 @@ class GoodController {
      * 获取商品的信息
      * @param id 商品Id
      */
-    def mGet(String id){
-        Good good = Good.get(id)
-        render good as JSON
+    def mGet(String id) {
+        def data = goodService.getGood(id)
+        render JsonHelper.onSuccessBody("${data}")
     }
 
     /**
@@ -32,38 +33,45 @@ class GoodController {
      * @param currentPage
      * @param status
      */
-    def mFind(int pageSize,int currentPage,String status){
+    def mFind(int pageSize, int currentPage, String status) {
         def data
         data = goodService.findAll(pageSize, currentPage, status) as JSON
         render JsonHelper.onSuccessBody("${data}")
     }
 
-    def mSave(){
+    def mSave() {
+        Good good = new Good()
+        good.id = params.id
+    }
+
+    def mUpdate() {
 
     }
 
-    def mUpdate(){
+    def mDelete() {
 
     }
 
-    def mDelete(){
-
-    }
-
-    def getGoodStatus(){
-        [[key:1,value:'交换'],[key:0,value:'出售'],[key:2,value:'求购']]
-    }
 
     def index(Integer max) {
+        initGoodKeyValues()
         params.max = Math.min(max ?: 10, 100)
         respond Good.list(params), model: [goodInstanceCount: Good.count()]
     }
 
+    private void initGoodKeyValues() {
+        flash.goodStatus = ConstantGroovyUtils.goodStatus
+        flash.goodRecency = ConstantGroovyUtils.goodRecency
+    }
+
     def show(Good goodInstance) {
+        goodInstance.recency = ConstantGroovyUtils.goodRecency.get(new Integer(goodInstance.recency))
+        goodInstance.status = ConstantGroovyUtils.goodStatus.get(new Integer(goodInstance.status))
         respond goodInstance
     }
 
     def create() {
+        initGoodKeyValues()
         respond new Good(params)
     }
 
@@ -111,6 +119,7 @@ class GoodController {
     }
 
     def edit(Good goodInstance) {
+        initGoodKeyValues()
         respond goodInstance
     }
 
@@ -125,13 +134,15 @@ class GoodController {
             respond goodInstance.errors, view: 'edit'
             return
         }
-        PersistentSet<GoodPicture> pgList = goodInstance.pictures
-//		fileUtils.get
-        println "${pgList.size()}"
+        List<GoodPicture> pgList = []
+        goodInstance.pictures?.each {
+            pgList[it.indexOrder] = it
+        }
         4.times {
             def f = request.getFile('imgFile' + it)
             if (!f.isEmpty()) {
-                GoodPicture gp = new GoodPicture()
+                println "update ${it}"
+                GoodPicture gp = pgList[it] ?: new GoodPicture()
                 gp.imgName = f.getOriginalFilename()
                 gp.indexOrder = it
                 gp.save flush: true
@@ -139,7 +150,10 @@ class GoodController {
                 pgList[it] = gp
             }
         }
-        goodInstance.pictures = pgList
+        if (pgList.size() > 0) {
+            goodInstance.pictures = pgList
+        }
+
 
         goodInstance.save flush: true
 
