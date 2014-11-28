@@ -8,7 +8,7 @@ class ConstantGroovyUtils {
      * 商品的类型信息
      */
     static def goodStatus =
-            [1: '交换', 0: '出售', 2: '求购']
+            [0: '出售',1: '交换', 2: '求购']
 
 
     static def goodRecency =

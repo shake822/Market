@@ -1,6 +1,7 @@
 package com.comtop.mobile.market
 
-
+import com.comtop.mobile.market.util.JsonHelper
+import grails.converters.JSON
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -19,6 +20,10 @@ class UserController {
 		users.getAllUsers().each(){ it.save flush:true }
 	}
 
+	def mGet(String id){
+		def data = User.get(id) as JSON
+		render JsonHelper.onSuccessBody("${data}")
+	}
 	def index(Integer max) {
 		params.max = Math.min(max ?: 10, 100)
 		respond User.list(params), model:[userInstanceCount: User.count()]

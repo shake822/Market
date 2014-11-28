@@ -18,6 +18,6 @@ class JsonHelper {
     }
 
     public static String onError(String errorMessage) {
-        return "{\"code\":-1,\"msg\":${errorMessage}}"
+        return "{\"code\":-1,\"msg\":\"${errorMessage}\"}"
     }
 }

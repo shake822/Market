@@ -165,7 +165,7 @@
                     商品类型
                 </td>
                 <td>
-                    [1: '交换', 0: '出售', 2: '求购']
+                    [-1:'最新', 0: '出售',1: '交换', 2: '求购']
                 </td>
             </tr>
             <tr>
@@ -250,7 +250,7 @@
                         </td>
                         <td>
                             body:<br>
-                            {<br>"hasMore":false,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
+                            {<br>"hasMore":false,<br> "currentPage":1,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
                         </td>
                     </tr>
                     </tbody>
@@ -268,7 +268,7 @@
                         </td>
                         <td>
                             body:<br>
-                            {"id":"ff80818149daaf3d0149db69bec10007","name":"ce","classify":"数码产品","createTime":"2014-11-23 14:49:40","deleteFlag":false,"user":{"id":"1","name":"1"},"status":"1","recency":"7","price":0,"code":"xxx","description":"ce","pictures":[{"indexOrder":0,"url":"/image/index?uuid=ff80818149daaf3d0149db73ca7c000a"},{"indexOrder":2,"url":"/image/index?uuid=ff80818149daaf3d0149db6bc51d0009"}]}}
+                            {"id":"8a8ab2ec49eb6b8a0149eb73eed30001","name":"123","classify":"数码产品","createTime":"2014-11-26 17:34:43","updateTime":"2014-11-26 17:34:43","deleteFlag":false,"userId":"8a8ab2ec496065050149606f1754098a","status":"1","recency":"7","price":0,"code":"xxx","description":"123","pictures":[{"indexOrder":2,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb73ecd10000"},{"indexOrder":3,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb7470160004"},{"indexOrder":1,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746ff80003"},{"indexOrder":0,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746fe60002"}]}}
                         </td>
                     </tr>
                     </tbody>
@@ -282,11 +282,18 @@
                     </tr>
                     <tr>
                         <td>
-                            id:物品的ID
+                            id:ID<br>
+                            name:名称<br>
+                            description:描述<br>
+                            classify:分类<br>
+                            status:状态<br>
+                            price:价格(默认为0)<br>
+                            code:编码<br>
+                            recency:新旧程度<br>
+                            deleteFlag:是否删除(默认为false)<br>
                         </td>
                         <td>
-                            body:<br>
-                            {"id":"ff80818149daaf3d0149db69bec10007","name":"ce","classify":"数码产品","createTime":"2014-11-23 14:49:40","deleteFlag":false,"user":{"id":"1","name":"1"},"status":"1","recency":"7","price":0,"code":"xxx","description":"ce","pictures":[{"indexOrder":0,"url":"/image/index?uuid=ff80818149daaf3d0149db73ca7c000a"},{"indexOrder":2,"url":"/image/index?uuid=ff80818149daaf3d0149db6bc51d0009"}]}}
+                            msg:
                         </td>
                     </tr>
                     </tbody>
@@ -330,7 +337,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <li>获取用户信息:<g:link controller="login" action="mGetUserInfo">login/mGetUserInfo</g:link></li>
+                <li>获取登录用户信息:<g:link controller="login" action="mGetUserInfo">login/mGetUserInfo</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -347,6 +354,28 @@
                     </tr>
                     </tbody>
                 </table>
+            </ul>
+            <li class="controller"><g:link controller="user">用户</g:link></li>
+            <ul style="margin-left: 50px">
+                <li>获取用户信息:<g:link controller="user" action="mGet">user/mGet</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            id
+                        </td>
+                        <td>
+                            body：{<br>"id":"8a8ab2ec496065050149606f1790099a",<br>"account":"zhaoqunqi",<br>"address":null,<br>
+                            "department":null,<br>"headImg":null,<br>"password":"C33367701511B4F6020EC61DED352059",<br>"phone":null,<br>"username":"赵群齐"<br>}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </ul>
         </ul>
     </div>

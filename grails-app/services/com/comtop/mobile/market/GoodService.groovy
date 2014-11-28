@@ -22,11 +22,9 @@ class GoodService {
                 name       : good.name,
                 classify   : good.classify,
                 createTime : good.createTime,
+                updateTime  : good.updateTime,
                 deleteFlag : good.deleteFlag,
-                user       : [
-                        id  : good.user.id,
-                        name: good.user.username
-                ],
+                userId       : good.user.id,
                 status     : good.status,
                 recency    : good.recency,
                 price      : good.price,
@@ -43,9 +41,11 @@ class GoodService {
      * @param type 类型
      * @return true:还有更多记录;fasle:没有更多记录
      */
-    def findAll(int pageSize, int currentPage, String status) {
-        println "pageSize = ${pageSize}   ${currentPage}"
+    def findAll(int pageSize, int currentPage, int status) {
+        println "pageSize = ${pageSize}   ${currentPage} ${status}"
         def returnMap = [:]
+        returnMap.currentPage = currentPage
+        returnMap.status = status
         def params = [:]
         params.max = pageSize + 1
         params.order = "desc"
@@ -72,7 +72,7 @@ class GoodService {
 //        }
         println "status ${status}"
         def list = Good.findAll(params) {
-            if (status != null) {
+            if (status != -1) {
                 eq("status", "${status}")
             }
             eq("deleteFlag", false)
@@ -99,6 +99,7 @@ class GoodService {
                         }
                     }
                     [
+                            id         : it.id,
                             classify   : it.classify,
                             userId     : it.userId,
                             description: it.description,
@@ -113,5 +114,55 @@ class GoodService {
                     ]
                 }
         returnMap
+    }
+
+    def getSaleGood(int status,String id){
+        def returnMap = [:]
+        def params = [:]
+
+        def list = Good.findAll() {
+            if (status != -1) {
+                eq("status", "${status}")
+            }
+            user{
+                eq("id","${id}")
+            }
+
+
+            eq("deleteFlag", false)
+        }
+
+        returnMap.data = list.collect()
+                {
+                    def pictureId = null
+                    def pictureIndex = 4
+                    it.pictures?.each() {
+                        if (pictureIndex > it.indexOrder) {
+                            pictureId = ConstantUtils.IMAGE_URL + it.id
+                            pictureIndex = it.indexOrder
+                        }
+
+                        if (it.indexOrder == 0) {
+                            return
+                        }
+                    }
+                    [
+                            id         : it.id,
+                            classify   : it.classify,
+                            userId     : it.userId,
+                            description: it.description,
+                            deleteFlag : it.deleteFlag,
+                            name       : it.name,
+                            price      : it.price,
+                            recency    : it.recency,
+                            createTime : it.createTime,
+                            status     : it.status,
+                            code       : it.code,
+                            picture    : pictureId
+                    ]
+                }
+        returnMap
+
+
     }
 }

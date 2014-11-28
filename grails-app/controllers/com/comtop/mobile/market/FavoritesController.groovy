@@ -1,6 +1,9 @@
 package com.comtop.mobile.market
 
-
+import com.comtop.mobile.market.util.ConstantUtils
+import com.comtop.mobile.market.util.JsonHelper
+import grails.converters.JSON
+import org.codehaus.groovy.grails.web.json.JSONArray
 
 import static org.springframework.http.HttpStatus.*
 
@@ -24,6 +27,71 @@ class FavoritesController {
 
     def create() {
         respond new Favorites(params)
+    }
+
+    @Transactional
+    def mDelete(){
+        Favorites favorites = Favorites.get(params.id)
+
+        try{
+
+        favorites.delete()
+
+        }catch(Exception e){
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessBody("删除成功")
+
+    }
+
+
+    def mGetMyFavorites(){
+        def list = Favorites.findAll() {
+            user{
+                eq("id",params.id)
+            }
+
+            eq("deleteFlag", false)
+        }
+
+        def data = list.collect()
+                {
+
+                    [
+                            id         : it.id,
+                            createTime : it.createTime,
+                            goodId     : it.goodId,
+                            userId     : it.userId,
+                            deleteFlag : it.deleteFlag
+                    ]
+                } as JSON
+
+        render JsonHelper.onSuccessBody("${data}")
+
+    }
+
+    @Transactional
+    def mSave(){
+        Favorites favorites = new Favorites()
+
+        favorites.createTime = new Date()
+        favorites.deleteFlag = params.deleteFlag?:false
+        favorites.user = User.get(params.userid)
+        favorites.good = Good.get(params.gooid)
+
+        try{
+            def favoritesSaved = favorites.save flush: true
+            if(favoritesSaved==null){
+                render JsonHelper.onError("参数有误")
+                return
+            }
+        }catch(Exception e){
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessBody("添加成功")
+
     }
 
     @Transactional

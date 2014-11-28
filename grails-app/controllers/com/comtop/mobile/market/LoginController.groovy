@@ -16,6 +16,7 @@ class LoginController {
 	def mLogin(){
 		String account = params["account"]
 		String password = params["password"]
+		println "${account} ==== ${password}"
 		User user = User.findWhere(account:"$account",password:"$password")
 		if(user ==null){
 			render JsonHelper.onError("账号或密码错误")

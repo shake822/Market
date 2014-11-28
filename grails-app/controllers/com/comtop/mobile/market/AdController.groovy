@@ -1,12 +1,11 @@
 package com.comtop.mobile.market
 
-import com.comtop.mobile.market.util.ConstantGroovyUtils
+import com.comtop.mobile.market.util.ConstantUtils
 import com.comtop.mobile.market.util.JsonHelper
-
-import static org.springframework.http.HttpStatus.*
 import grails.converters.JSON
 import grails.transaction.Transactional
 
+import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class AdController {
@@ -26,7 +25,7 @@ class AdController {
         def data =  adList.collect() {
             [
                     id: it.id,
-                    url: ConstantGroovyUtils.IMAGE_URL + it.id,
+                    url: ConstantUtils.IMAGE_URL + it.id,
                     action:it.imgAction
             ]
         } as JSON

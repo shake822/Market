@@ -23,7 +23,7 @@ class BootStrap {
         }
 
         grails.converters.JSON.registerObjectMarshaller(User) {
-            return it.properties.findAll { k, v -> k != 'class' }
+            return it.properties.findAll { k, v -> (k != 'class' || k !='password') }
         }
     }
     def destroy = {

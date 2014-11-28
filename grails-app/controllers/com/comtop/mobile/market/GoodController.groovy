@@ -33,15 +33,63 @@ class GoodController {
      * @param currentPage
      * @param status
      */
-    def mFind(int pageSize, int currentPage, String status) {
+    def mFind(String pageSize, String currentPage, String status) {
+        println params["pageSize"]
         def data
-        data = goodService.findAll(pageSize, currentPage, status) as JSON
+        data = goodService.findAll(pageSize as int, currentPage as int,status as int) as JSON
         render JsonHelper.onSuccessBody("${data}")
     }
 
+    /**
+     *
+     * @param status
+     * @param id
+     */
+    def mGetMyGood(String status,String id){
+        def data = goodService.getSaleGood(status as int,id) as JSON
+        render JsonHelper.onSuccessBody("${data}")
+    }
+
+    @Transactional
     def mSave() {
         Good good = new Good()
         good.id = params.id
+        good.name = params.name
+        good.description = params.description
+        good.classify = params.classify
+        good.status = params.status
+        good.price = params.price?:0
+        good.code = params.code
+        good.recency = params.recency
+        good.deleteFlag = params.deleteFlag?:false
+        good.createTime = new Date()
+        good.updateTime = new Date()
+        List<GoodPicture> pgList = []
+        try{
+//        4.times {
+//            def f = request.getFile('imgFile' + it)
+//            if (!f.isEmpty()) {
+//                GoodPicture gp = new GoodPicture()
+//                gp.imgName = f.getOriginalFilename()
+//                gp.indexOrder = it
+//                gp.save flush: true
+//                fileUtils.saveFile(f, gp.id)
+//                pgList.add(gp)
+//            }
+//        }
+
+        good.pictures = pgList
+
+           def goodSaved = good.save flush: true
+            if(goodSaved==null){
+                render JsonHelper.onError("参数有误")
+                return
+            }
+        }catch(Exception e){
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessBody("添加成功")
     }
 
     def mUpdate() {
