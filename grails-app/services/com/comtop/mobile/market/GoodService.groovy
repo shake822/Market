@@ -1,6 +1,7 @@
 package com.comtop.mobile.market
 
 import com.comtop.mobile.market.util.ConstantUtils
+import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -9,6 +10,9 @@ class GoodService {
 
     def getGood(String uuid) {
         Good good = Good.get(uuid)
+        if (good == null) {
+            return null
+        }
         def pics = []
         good.pictures?.each {
             pics << [
@@ -22,10 +26,11 @@ class GoodService {
                 name       : good.name,
                 classify   : good.classify,
                 createTime : good.createTime,
-                updateTime  : good.updateTime,
+                updateTime : good.updateTime,
                 deleteFlag : good.deleteFlag,
-                userId       : good.user.id,
+                userId     : good.user.id,
                 status     : good.status,
+                transStatus: good.transStatus,
                 recency    : good.recency,
                 price      : good.price,
                 code       : good.code,
@@ -41,11 +46,11 @@ class GoodService {
      * @param type 类型
      * @return true:还有更多记录;fasle:没有更多记录
      */
-    def findAll(int pageSize, int currentPage, int status) {
-        println "pageSize = ${pageSize}   ${currentPage} ${status}"
+    def findAll(int pageSize, int currentPage, def condition) {
+        println "pageSize = ${pageSize}   ${currentPage} ${condition}"
         def returnMap = [:]
         returnMap.currentPage = currentPage
-        returnMap.status = status
+//        returnMap.status = status
         def params = [:]
         params.max = pageSize + 1
         params.order = "desc"
@@ -70,12 +75,24 @@ class GoodService {
 //        def list = goodC.list(params) {
 //            eq("type","${type}")
 //        }
-        println "status ${status}"
+//        println "status ${status}"
         def list = Good.findAll(params) {
-            if (status != -1) {
-                eq("status", "${status}")
+//            if (status != -1) {
+//                eq("status", "${status}")
+//            }
+            condition.each() {
+                def keys = it.key.split(".")
+                if (keys.length == 2) {
+                    keys[0] {
+                        eq(keys[1], it.value)
+                    }
+                } else {
+                    eq(it.key, it.value)
+                }
+
             }
             eq("deleteFlag", false)
+            eq("transStatus", "0")
         }
         println "${list.size()}"
         if (list.size() == pageSize + 1) {
@@ -84,39 +101,11 @@ class GoodService {
         } else {
             returnMap.hasMore = false
         }
-        returnMap.data = list.collect()
-                {
-                    def pictureId = null
-                    def pictureIndex = 4
-                    it.pictures?.each() {
-                        if (pictureIndex > it.indexOrder) {
-                            pictureId = ConstantUtils.IMAGE_URL + it.id
-                            pictureIndex = it.indexOrder
-                        }
-
-                        if (it.indexOrder == 0) {
-                            return
-                        }
-                    }
-                    [
-                            id         : it.id,
-                            classify   : it.classify,
-                            userId     : it.userId,
-                            description: it.description,
-                            deleteFlag : it.deleteFlag,
-                            name       : it.name,
-                            price      : it.price,
-                            recency    : it.recency,
-                            createTime : it.createTime,
-                            status     : it.status,
-                            code       : it.code,
-                            picture    : pictureId
-                    ]
-                }
+        returnMap.data = goodToJson(list)
         returnMap
     }
 
-    def getSaleGood(int status,String id){
+    def getSaleGood(int status, String id) {
         def returnMap = [:]
         def params = [:]
 
@@ -124,15 +113,21 @@ class GoodService {
             if (status != -1) {
                 eq("status", "${status}")
             }
-            user{
-                eq("id","${id}")
+            user {
+                eq("id", "${id}")
             }
 
 
             eq("deleteFlag", false)
         }
 
-        returnMap.data = list.collect()
+        returnMap.data = goodToJson(list)
+        returnMap
+    }
+
+
+    private def goodToJson(def list) {
+        list.collect()
                 {
                     def pictureId = null
                     def pictureIndex = 4
@@ -157,12 +152,30 @@ class GoodService {
                             recency    : it.recency,
                             createTime : it.createTime,
                             status     : it.status,
+                            transStatus: it.transStatus,
                             code       : it.code,
                             picture    : pictureId
                     ]
                 }
-        returnMap
+    }
 
+    def updateTransStatus(String goodId, String transStatus) {
+        Good good = Good.get(goodId)
+        if(good ==null){
+            return "没有找到宝贝"
+        }
+        good.transStatus = transStatus
+        good.save flush: true
+        "修改成功"
+    }
 
+    def delete(String goodId) {
+        Good good = Good.get(goodId)
+        if(good ==null){
+            return "没有找到宝贝"
+        }
+        good.deleteFlag=true
+        good.save flush: true
+        "删除成功"
     }
 }

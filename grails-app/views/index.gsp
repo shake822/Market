@@ -184,6 +184,14 @@
                     0表示面议
                 </td>
             </tr>
+            <tr>
+                <td>
+                    交易状态
+                </td>
+                <td>
+                    [0: '交易中', 1: '已取消', 2: '已完成']
+                </td>
+            </tr>
             </tbody>
         </table>
 
@@ -235,7 +243,7 @@
             <li class="controller"><g:link
                     controller="good">${message(code: 'good.label', default: 'Good')}</g:link></li>
             <ul style="margin-left: 50px">
-                <li>获取物品列表:<g:link controller="good" action="mFind">good/mFind</g:link></li>
+                <li>获取物品列表:<g:link controller="good" params="[pageSize:'1',currentPage:'1',status:'-1']" action="mFind">good/mFind</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -246,16 +254,35 @@
                         <td>
                             pageSize:分页大小<br>
                             currentPage:当前页码<br>
-                            status:物品状态([1: '交换', 0: '出售', 2: '求购',null:'最新'])
+                            status:物品状态
                         </td>
                         <td>
                             body:<br>
-                            {<br>"hasMore":false,<br> "currentPage":1,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
+                            {<br>"hasMore":false,<br> "currentPage":1,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","transStatus":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <li>获取物品详情:<g:link controller="good" action="mGet">good/mGet</g:link></li>
+                <li>获取自己物品列表(需要登陆):<g:link controller="good" params="[pageSize:'1',currentPage:'1',status:'-1']" action="mFindMyGood">good/mFindMyGood</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            pageSize:分页大小<br>
+                            currentPage:当前页码<br>
+                            status:物品状态
+                        </td>
+                        <td>
+                            同[获取物品列表]
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>获取物品详情:<g:link controller="good" params="[id:'8a8ab2ec49eb6b8a0149eb73eed30001']" action="mGet">good/mGet</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -268,12 +295,12 @@
                         </td>
                         <td>
                             body:<br>
-                            {"id":"8a8ab2ec49eb6b8a0149eb73eed30001","name":"123","classify":"数码产品","createTime":"2014-11-26 17:34:43","updateTime":"2014-11-26 17:34:43","deleteFlag":false,"userId":"8a8ab2ec496065050149606f1754098a","status":"1","recency":"7","price":0,"code":"xxx","description":"123","pictures":[{"indexOrder":2,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb73ecd10000"},{"indexOrder":3,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb7470160004"},{"indexOrder":1,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746ff80003"},{"indexOrder":0,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746fe60002"}]}}
+                            {"id":"8a8ab2ec49eb6b8a0149eb73eed30001","name":"123","classify":"数码产品","createTime":"2014-11-26 17:34:43","updateTime":"2014-11-26 17:34:43","deleteFlag":false,"userId":"8a8ab2ec496065050149606f1754098a","status":"1","transStatus":"0","recency":"7","price":0,"code":"xxx","description":"123","pictures":[{"indexOrder":2,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb73ecd10000"},{"indexOrder":3,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb7470160004"},{"indexOrder":1,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746ff80003"},{"indexOrder":0,"url":"/image/index?uuid=8a8ab2ec49eb6b8a0149eb746fe60002"}]}}
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <li>新增物品:<g:link controller="good" action="mSave">good/mSave</g:link></li>
+                <li>新增物品:(需要登陆认证,POST提交,form的enctype = "multipart/form-data")<g:link controller="good" action="mSave">good/mSave</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -282,7 +309,6 @@
                     </tr>
                     <tr>
                         <td>
-                            id:ID<br>
                             name:名称<br>
                             description:描述<br>
                             classify:分类<br>
@@ -291,6 +317,43 @@
                             code:编码<br>
                             recency:新旧程度<br>
                             deleteFlag:是否删除(默认为false)<br>
+                            imgFile0~3:物品的图片
+                        </td>
+                        <td>
+                            msg:
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <li>修改物品的交易信息:(需要登陆认证)<g:link controller="good"   action="mUpdateTransStatus">good/mUpdateTransStatus</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            goodId:物品ID<br>
+                            newTransStatus:物品交易状态
+                        </td>
+                        <td>
+                            msg:
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>删除物品的信息:(需要登陆认证)<g:link controller="good"   action="mDelete">good/mDelete</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            goodId:物品ID
                         </td>
                         <td>
                             msg:
@@ -371,6 +434,25 @@
                         <td>
                             body：{<br>"id":"8a8ab2ec496065050149606f1790099a",<br>"account":"zhaoqunqi",<br>"address":null,<br>
                             "department":null,<br>"headImg":null,<br>"password":"C33367701511B4F6020EC61DED352059",<br>"phone":null,<br>"username":"赵群齐"<br>}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>修改用户信息(需要登陆):<g:link controller="user" action="mUpdate">user/mGet</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            phone:电话<br>
+                            password:密码(加密后)<br>
+                            department:部门<br>
+                            address:地址位置<br>
+                        </td>
+                        <td>
                         </td>
                     </tr>
                     </tbody>

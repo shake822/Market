@@ -24,7 +24,13 @@ class GoodController {
      */
     def mGet(String id) {
         def data = goodService.getGood(id)
-        render JsonHelper.onSuccessBody("${data}")
+        if (data == null) {
+            render JsonHelper.onError("没有找到宝贝")
+            return
+        } else {
+            render JsonHelper.onSuccessBody("${data}")
+        }
+
     }
 
     /**
@@ -34,58 +40,77 @@ class GoodController {
      * @param status
      */
     def mFind(String pageSize, String currentPage, String status) {
-        println params["pageSize"]
-        def data
-        data = goodService.findAll(pageSize as int, currentPage as int,status as int) as JSON
-        render JsonHelper.onSuccessBody("${data}")
+        def params = [:]
+        if (!"-1".equals(status)) {
+            params.put("status", status as int)
+        }
+        def data = goodService.findAll(pageSize as int, currentPage as int, params)
+        data.status = status
+        render JsonHelper.onSuccessBody("${data as JSON}")
     }
 
     /**
-     *
+     * 获取自己宝贝
      * @param status
-     * @param id
      */
-    def mGetMyGood(String status,String id){
-        def data = goodService.getSaleGood(status as int,id) as JSON
-        render JsonHelper.onSuccessBody("${data}")
+    def mFindMyGood(String pageSize, String currentPage, String status) {
+        def params = ["user.id": session.user.id]
+        if (!"-1".equals(status)) {
+            params.put("status", status as int)
+        }
+        def data = goodService.findAll(pageSize as int, currentPage as int, params)
+        data.status = status
+        render JsonHelper.onSuccessBody("${data as JSON}")
+    }
+
+    /**
+     * 修改物品的交易状态
+     * @param goodId
+     * @param newTransStatus
+     */
+    @Transactional
+    def mUpdateTransStatus(String goodId, String newTransStatus) {
+        def data = goodService.updateTransStatus(goodId, newTransStatus)
+        render JsonHelper.onSuccessMessage("${data}")
     }
 
     @Transactional
     def mSave() {
         Good good = new Good()
-        good.id = params.id
         good.name = params.name
         good.description = params.description
         good.classify = params.classify
         good.status = params.status
-        good.price = params.price?:0
+        good.price = params.price ?: 0
         good.code = params.code
+        good.transStatus = "0"
         good.recency = params.recency
-        good.deleteFlag = params.deleteFlag?:false
+        good.user = session.user
+        good.deleteFlag = params.deleteFlag ?: false
         good.createTime = new Date()
         good.updateTime = new Date()
         List<GoodPicture> pgList = []
-        try{
-//        4.times {
-//            def f = request.getFile('imgFile' + it)
-//            if (!f.isEmpty()) {
-//                GoodPicture gp = new GoodPicture()
-//                gp.imgName = f.getOriginalFilename()
-//                gp.indexOrder = it
-//                gp.save flush: true
-//                fileUtils.saveFile(f, gp.id)
-//                pgList.add(gp)
-//            }
-//        }
+        try {
+            4.times {
+                def f = request.getFile('imgFile' + it)
+                if (!f.isEmpty()) {
+                    GoodPicture gp = new GoodPicture()
+                    gp.imgName = f.getOriginalFilename()
+                    gp.indexOrder = it
+                    gp.save flush: true
+                    fileUtils.saveFile(f, gp.id)
+                    pgList.add(gp)
+                }
+            }
 
-        good.pictures = pgList
+            good.pictures = pgList
 
-           def goodSaved = good.save flush: true
-            if(goodSaved==null){
+            def goodSaved = good.save flush: true
+            if (goodSaved == null) {
                 render JsonHelper.onError("参数有误")
                 return
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             render JsonHelper.onError("服务器内部错误")
             return
         }
@@ -96,8 +121,10 @@ class GoodController {
 
     }
 
-    def mDelete() {
-
+    @Transactional
+    def mDelete(String goodId) {
+        def data = goodService.delete(goodId)
+        render JsonHelper.onSuccessMessage("${data}")
     }
 
 
@@ -107,14 +134,19 @@ class GoodController {
         respond Good.list(params), model: [goodInstanceCount: Good.count()]
     }
 
+    /**
+     * 初始化下拉菜单信息
+     */
     private void initGoodKeyValues() {
         flash.goodStatus = ConstantGroovyUtils.goodStatus
         flash.goodRecency = ConstantGroovyUtils.goodRecency
+        flash.goodTransStatus = ConstantGroovyUtils.goodTransStatus
     }
 
     def show(Good goodInstance) {
         goodInstance.recency = ConstantGroovyUtils.goodRecency.get(new Integer(goodInstance.recency))
         goodInstance.status = ConstantGroovyUtils.goodStatus.get(new Integer(goodInstance.status))
+        goodInstance.transStatus = ConstantGroovyUtils.goodTransStatus.get(goodInstance.transStatus as int)
         respond goodInstance
     }
 

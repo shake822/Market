@@ -9,6 +9,7 @@ class Good {
     String description
     String classify
     String status
+    String transStatus
     int price
     String code
     String recency

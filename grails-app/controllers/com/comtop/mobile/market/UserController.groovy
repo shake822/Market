@@ -1,130 +1,162 @@
 package com.comtop.mobile.market
 
 import com.comtop.mobile.market.util.JsonHelper
+import com.comtop.mobile.market.util.StringUtils
+import com.comtop.mobile.utils.EIPUser
 import grails.converters.JSON
-
-import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
-import com.comtop.mobile.utils.EIPUser
-
+import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class UserController {
 
-	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-	@Transactional
-	def initFromEIP(){
-		EIPUser users = new EIPUser()
-		users.getAllUsers().each(){ it.save flush:true }
-	}
+    @Transactional
+    def initFromEIP() {
+        EIPUser users = new EIPUser()
+        users.getAllUsers().each() { it.save flush: true }
+    }
 
-	def mGet(String id){
-		def data = User.get(id) as JSON
-		render JsonHelper.onSuccessBody("${data}")
-	}
-	def index(Integer max) {
-		params.max = Math.min(max ?: 10, 100)
-		respond User.list(params), model:[userInstanceCount: User.count()]
-	}
+    /**
+     * 获取用户信息
+     * @param id 用户Id
+     * @return
+     */
+    def mGet(String id) {
+        def data = User.get(id)
+        if (data == null) {
+            render JsonHelper.onError("没有此用户")
+            return
+        }
+        render JsonHelper.onSuccessBody("${data as JSON}")
+    }
 
-	def show(User userInstance) {
-		respond userInstance
-	}
+    @Transactional
+    def mUpdate() {
+        User user = session.user
+        if (user == null) {
+            render JsonHelper.onError("没有此用户")
+            return
+        }
+        if (!StringUtils.isBlank(params.phone)) {
+            user.phone = params.phone
+        }
+        if (!StringUtils.isBlank(params.password)) {
+            user.password = params.password
+        }
+        if (!StringUtils.isBlank(params.department)) {
+            user.department = params.department
+        }
+        if (!StringUtils.isBlank(params.address)) {
+            user.address = params.address
+        }
+        user.save flush: true
+        render JsonHelper.onSuccessMessage("修改成功")
+    }
 
-	def create() {
-		respond new User(params)
-	}
+    def index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        respond User.list(params), model: [userInstanceCount: User.count()]
+    }
 
-	@Transactional
-	def save(User userInstance) {
-		if (userInstance == null) {
-			notFound()
-			return
-		}
+    def show(User userInstance) {
+        respond userInstance
+    }
 
-		if (userInstance.hasErrors()) {
-			respond userInstance.errors, view:'create'
-			return
-		}
+    def create() {
+        respond new User(params)
+    }
 
-		userInstance.save flush:true
+    @Transactional
+    def save(User userInstance) {
+        if (userInstance == null) {
+            notFound()
+            return
+        }
 
-		request.withFormat {
-			form multipartForm {
-				flash.message = message(code: 'default.created.message', args: [
-					message(code: 'user.label', default: 'User'),
-					userInstance.id
-				])
-				redirect userInstance
-			}
-			'*' { respond userInstance, [status: CREATED] }
-		}
-	}
+        if (userInstance.hasErrors()) {
+            respond userInstance.errors, view: 'create'
+            return
+        }
 
-	def edit(User userInstance) {
-		respond userInstance
-	}
+        userInstance.save flush: true
 
-	@Transactional
-	def update(User userInstance) {
-		if (userInstance == null) {
-			notFound()
-			return
-		}
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [
+                        message(code: 'user.label', default: 'User'),
+                        userInstance.id
+                ])
+                redirect userInstance
+            }
+            '*' { respond userInstance, [status: CREATED] }
+        }
+    }
 
-		if (userInstance.hasErrors()) {
-			respond userInstance.errors, view:'edit'
-			return
-		}
+    def edit(User userInstance) {
+        respond userInstance
+    }
 
-		userInstance.save flush:true
+    @Transactional
+    def update(User userInstance) {
+        if (userInstance == null) {
+            notFound()
+            return
+        }
 
-		request.withFormat {
-			form multipartForm {
-				flash.message = message(code: 'default.updated.message', args: [
-					message(code: 'User.label', default: 'User'),
-					userInstance.id
-				])
-				redirect userInstance
-			}
-			'*'{ respond userInstance, [status: OK] }
-		}
-	}
+        if (userInstance.hasErrors()) {
+            respond userInstance.errors, view: 'edit'
+            return
+        }
 
-	@Transactional
-	def delete(User userInstance) {
+        userInstance.save flush: true
 
-		if (userInstance == null) {
-			notFound()
-			return
-		}
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.updated.message', args: [
+                        message(code: 'user.label', default: 'User'),
+                        userInstance.id
+                ])
+                redirect userInstance
+            }
+            '*' { respond userInstance, [status: OK] }
+        }
+    }
 
-		userInstance.delete flush:true
+    @Transactional
+    def delete(User userInstance) {
 
-		request.withFormat {
-			form multipartForm {
-				flash.message = message(code: 'default.deleted.message', args: [
-					message(code: 'User.label', default: 'User'),
-					userInstance.id
-				])
-				redirect action:"index", method:"GET"
-			}
-			'*'{ render status: NO_CONTENT }
-		}
-	}
+        if (userInstance == null) {
+            notFound()
+            return
+        }
 
-	protected void notFound() {
-		request.withFormat {
-			form multipartForm {
-				flash.message = message(code: 'default.not.found.message', args: [
-					message(code: 'user.label', default: 'User'),
-					params.id
-				])
-				redirect action: "index", method: "GET"
-			}
-			'*'{ render status: NOT_FOUND }
-		}
-	}
+        userInstance.delete flush: true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [
+                        message(code: 'user.label', default: 'User'),
+                        userInstance.id
+                ])
+                redirect action: "index", method: "GET"
+            }
+            '*' { render status: NO_CONTENT }
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [
+                        message(code: 'user.label', default: 'User'),
+                        params.id
+                ])
+                redirect action: "index", method: "GET"
+            }
+            '*' { render status: NOT_FOUND }
+        }
+    }
 }

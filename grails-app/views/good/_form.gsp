@@ -49,6 +49,16 @@
               from="${flash.goodStatus}"/>
 </div>
 
+
+<div
+        class="fieldcontain ${hasErrors(bean: goodInstance, field: 'transStatus', 'error')} required">
+    <label for="transStatus"><g:message code="good.transStatus.label"
+                                   default="transStatus"/> <span class="required-indicator">*</span>
+    </label>
+    <g:select name="transStatus" optionKey="key" value="${goodInstance?.transStatus}" optionValue="value"
+              from="${flash.goodTransStatus}"/>
+</div>
+
 <div
         class="fieldcontain ${hasErrors(bean: goodInstance, field: 'classify', 'error')} required">
     <label for="classify"><g:message code="good.classify.label"

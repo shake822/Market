@@ -35,7 +35,10 @@
 						
 						
 						<g:sortableColumn property="status" title="${message(code: 'good.status.label', default: 'Status')}" />
-						
+
+						<g:sortableColumn property="transStatus" title="${message(code: 'good.transStatus.label', default: 'TransStatus')}" />
+
+
 						<g:sortableColumn property="createTime" title="${message(code: 'good.createTime.label', default: 'Create Time')}" />
 					
 					</tr>
@@ -55,9 +58,10 @@
 						
 						<td>${flash.goodStatus.get(new Integer(goodInstance.status))}</td>
 
+						<td>${flash.goodTransStatus.get(new Integer(goodInstance.transStatus))}</td>
+
 						<td><g:formatDate format="yyyy-MM-dd HH:mm:ss" date="${goodInstance.createTime}" /></td>
-					
-					
+
 					</tr>
 				</g:each>
 				</tbody>

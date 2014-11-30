@@ -59,6 +59,14 @@
 							bean="${goodInstance}" field="status" /></span></li>
 			</g:if>
 
+			<g:if test="${goodInstance?.transStatus}">
+				<li class="fieldcontain"><span id="status-label"
+											   class="property-label"><g:message code="good.transStatus.label"
+																				 default="transStatus" /></span> <span class="property-value"
+																												  aria-labelledby="status-label"><g:fieldValue
+							bean="${goodInstance}" field="transStatus" /></span></li>
+			</g:if>
+
 
 			<g:if test="${goodInstance?.description}">
 				<li class="fieldcontain"><span id="description-label"
