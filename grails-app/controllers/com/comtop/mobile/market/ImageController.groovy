@@ -14,6 +14,7 @@ class ImageController {
 
 	def index() {
 		String uuid =  params["uuid"]
+		println "uuid = ${uuid}"
 		int width =( params["width"] == null ?200 :  params["width"] as int)
 		File imgFile = fileUtils.getFile(uuid)
 		if (imgFile.exists()) {

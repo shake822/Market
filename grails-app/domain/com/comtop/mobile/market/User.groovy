@@ -2,9 +2,10 @@ package com.comtop.mobile.market
 
 import groovy.transform.ToString;
 
-@ToString(excludes = "class,password")
+@ToString(excludes = ['class'])
 class User {
-	
+
+	/** 主键*/
 	String id
 	
 	/**用户名*/

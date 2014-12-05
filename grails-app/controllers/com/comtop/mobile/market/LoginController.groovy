@@ -2,6 +2,7 @@ package com.comtop.mobile.market
 
 import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
+import grails.converters.XML
 import grails.transaction.Transactional
 
 import com.comtop.mobile.utils.MD5Tools
@@ -18,6 +19,8 @@ class LoginController {
 		String password = params["password"]
 		println "${account} ==== ${password}"
 		User user = User.findWhere(account:"$account",password:"$password")
+		User u  = User.get("8a8ab2ec496065050149606f1790099a")
+		println u as JSON
 		if(user ==null){
 			render JsonHelper.onError("账号或密码错误")
 		}else{

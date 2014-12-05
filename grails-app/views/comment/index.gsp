@@ -32,7 +32,7 @@
 					
 						<th><g:message code="comment.good.label" default="Good" /></th>
 					
-						<g:sortableColumn property="indexOrder" title="${message(code: 'comment.indexOrder.label', default: 'Index Order')}" />
+						<g:sortableColumn property="isRead" title="${message(code: 'comment.isRead.label', default: 'Is Read')}" />
 					
 						<th><g:message code="comment.toUser.label" default="To User" /></th>
 					
@@ -50,7 +50,7 @@
 					
 						<td>${fieldValue(bean: commentInstance, field: "good")}</td>
 					
-						<td>${fieldValue(bean: commentInstance, field: "indexOrder")}</td>
+						<td><g:formatBoolean boolean="${commentInstance.isRead}" /></td>
 					
 						<td>${fieldValue(bean: commentInstance, field: "toUser")}</td>
 					

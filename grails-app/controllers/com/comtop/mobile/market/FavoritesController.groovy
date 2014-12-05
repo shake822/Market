@@ -16,6 +16,57 @@ class FavoritesController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def favoritesService;
+
+
+    @Transactional
+    def mDelete() {
+        Favorites favorites = Favorites.get(params.id)
+        try {
+            favorites.deleteFlag = true
+            favorites.save flush: true
+        } catch (Exception e) {
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessMessage("删除成功")
+
+    }
+
+    /**
+     *
+     * @param pageSize
+     * @param currentPage
+     * @return
+     */
+    def mFindMyFavorites(String pageSize, String currentPage) {
+        println "123123   ${pageSize} === ${currentPage}"
+        def data = favoritesService.findAll(pageSize as int,currentPage as int,session.user.id) as JSON
+        render JsonHelper.onSuccessBody("${data}")
+    }
+
+    @Transactional
+    def mSave() {
+        Favorites favorites = new Favorites()
+        favorites.createTime = new Date()
+        favorites.deleteFlag = params.deleteFlag ?: false
+        favorites.user = session.user
+        favorites.good = Good.get(params.goodId)
+
+        try {
+            def favoritesSaved = favorites.save flush: true
+            if (favoritesSaved == null) {
+                render JsonHelper.onError("参数有误")
+                return
+            }
+        } catch (Exception e) {
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessBody("添加成功")
+    }
+
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Favorites.list(params), model: [favoritesInstanceCount: Favorites.count()]
@@ -29,70 +80,7 @@ class FavoritesController {
         respond new Favorites(params)
     }
 
-    @Transactional
-    def mDelete() {
-        Favorites favorites = Favorites.get(params.id)
 
-        try {
-
-            favorites.delete()
-
-        } catch (Exception e) {
-            render JsonHelper.onError("服务器内部错误")
-            return
-        }
-        render JsonHelper.onSuccessMessage("删除成功")
-
-    }
-
-
-    def mGetMyFavorites() {
-        def list = Favorites.findAll() {
-            user {
-                eq("id", params.id)
-            }
-
-            eq("deleteFlag", false)
-        }
-
-        def data = list.collect()
-                {
-
-                    [
-                            id        : it.id,
-                            createTime: it.createTime,
-                            goodId    : it.goodId,
-                            userId    : it.userId,
-                            deleteFlag: it.deleteFlag
-                    ]
-                } as JSON
-
-        render JsonHelper.onSuccessBody("${data}")
-
-    }
-
-    @Transactional
-    def mSave() {
-        Favorites favorites = new Favorites()
-
-        favorites.createTime = new Date()
-        favorites.deleteFlag = params.deleteFlag ?: false
-        favorites.user = User.get(params.userid)
-        favorites.good = Good.get(params.gooid)
-
-        try {
-            def favoritesSaved = favorites.save flush: true
-            if (favoritesSaved == null) {
-                render JsonHelper.onError("参数有误")
-                return
-            }
-        } catch (Exception e) {
-            render JsonHelper.onError("服务器内部错误")
-            return
-        }
-        render JsonHelper.onSuccessBody("添加成功")
-
-    }
 
     @Transactional
     def save(Favorites favoritesInstance) {

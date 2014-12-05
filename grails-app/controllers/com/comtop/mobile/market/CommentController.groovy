@@ -1,6 +1,7 @@
 package com.comtop.mobile.market
 
-
+import com.comtop.mobile.market.util.JsonHelper
+import grails.converters.JSON
 
 import static org.springframework.http.HttpStatus.*
 
@@ -11,7 +12,76 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class CommentController {
 
+    CommentService commentService
+
+
+    UtilsService utilsService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    /**
+     * 获取评论信息
+     * @param goodId
+     */
+    def mFind(String pageSize, String currentPage,String goodId){
+        Date searchTime = params.searchTime ==null ? new Date():new Date(params.searchTime as long)
+        int count = params.count ==null ? -1:  params.count as int
+        if(count == -1){
+            count = utilsService.getCount {
+                Comment.countByGood(Good.get(goodId))
+            }
+        }
+        int iPageSize  = pageSize as int
+        int iCurrentPage  = currentPage as int
+        int startCount = count - (iCurrentPage - 1) * iPageSize
+        println "${count}"
+        def data = utilsService.findAll(pageSize,currentPage){
+            queryParams ->
+               def list =  Comment.findAll(queryParams){
+                   good{
+                       eq("id",goodId)
+                   }
+                }
+                def data = list.collect(){
+                        [
+                                id: it.id,
+                                index : startCount--,
+                                createTime:it.createTime,
+                                content:it.content,
+                                fromUserId:it.fromUser.id,
+                                fromUserName:it.fromUser.username,
+                                fromUserAddr:it.fromUser.address,
+                                fromUserImage:it.fromUser.headImg
+                        ]
+                }
+                data
+        }
+        data.searchTime = searchTime.getTime()
+        data.count  = count
+        render JsonHelper.onSuccessBody("${data as JSON}")
+    }
+
+
+    /**
+     * 保存评论信息
+     */
+    @Transactional
+    def mSave(String content,String goodId,String fromUserId,String toUserId){
+        Comment comment = new Comment()
+        comment.good = Good.get(goodId)
+        comment.fromUser = session.user
+        comment.toUser = User.get(toUserId)
+        comment.createTime = new Date()
+        comment.isRead = false
+        comment.content = content
+        def commentSaved = comment.save flush:true
+        if (commentSaved == null) {
+            render JsonHelper.onError("保存失败")
+            return
+        }
+        mFind("20","1",goodId)
+    }
+
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)

@@ -211,8 +211,7 @@
                             无
                         </td>
                         <td>
-                            body:<br>
-                            [<br>{"id":"8a8ab2ec496065050149609ea6620e4f","url":"/image/index?uuid=8a8ab2ec496065050149609ea6620e4f","action":""},<br>{"id":"8a8ab2ec496065050149609ea6620e4f","url":"/image/index?uuid=8a8ab2ec496065050149609ea6620e4f","action":""}<br>]
+                            {"count":2,"data":[{"id":"8a8ab2ec49caec930149caed7bd90000","url":"/image/index?uuid=8a8ab2ec49caec930149caed7bd90000","action":"show:cmf"},{"id":"8a8ab2ec49caec930149cafb46650001","url":"/image/index?uuid=8a8ab2ec49caec930149cafb46650001","action":"url:http://www.baidu.com"}]}
                         </td>
                     </tr>
                     </tbody>
@@ -438,7 +437,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <li>修改用户信息(需要登陆):<g:link controller="user" action="mUpdate">user/mGet</g:link></li>
+                <li>修改用户信息(需要登陆):<g:link controller="user" action="mUpdate">user/mUpdate</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -458,6 +457,103 @@
                     </tbody>
                 </table>
 
+            </ul>
+            <li class="controller"><g:link controller="favorites">收藏</g:link></li>
+            <ul style="margin-left: 50px">
+                <li>获取收藏列表(需要登录):<g:link controller="favorites" action="mFindMyFavorites">favorites/mFindMyFavorites</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            pageSize:分页大小<br>
+                            currentPage:当前页码
+                        </td>
+                        <td>
+                            body：[currentPage:1, hasMore:false, data:[{"id":"8a8ab2ec4a09fe2d014a0a0493450000","createTime":"2014-12-02 00:00:00","goodId":"8a8ab2ec4998a169014998a58c9d0004","userId":"8a8ab2ec496065050149606f1790099a","deleteFlag":false}]]
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>添加收藏(需要登陆):<g:link controller="favorites" action="mSave">favorites/mSave</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                          goodId:物品Id
+                        </td>
+                        <td>
+                            msg:添加成功
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>删除收藏(需要登陆):<g:link controller="favorites" action="mDelete">favorites/mDelete</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            id:收藏id
+                        </td>
+                        <td>
+                            msg:删除成功
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </ul>
+            <li class="controller"><g:link controller="comment">评论</g:link></li>
+            <ul style="margin-left: 50px">
+                <li>获取评论:<g:link controller="comment" params="[pageSize:1,currentPage:1]" action="mFind">comment/mFind</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            pageSize:分页大小<br>
+                            currentPage:当前页码<br>
+                            searchTime:查询时间<br>
+                            count:记录数
+                        </td>
+                        <td width="70%">
+                            body：{"currentPage":1,"hasMore":false,"data":[{"id":"8a8ab2ec4a09fe2d014a0df09df20017","index":1,"createTime":"2014-12-03 00:00:00","content":"水电费水电费","fromUserId":"8a8ab2ec496065050149606f1754098a","fromUserName":"罗珍明","fromUserAddr":null,"fromUserImage":null}],"searchTime":1417684072945,"count":1}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>保存评论(需要登录):<g:link controller="comment" params="[content:'test',goodId:'8a8ab2ec4a0ed127014a0ef9fc81000d',fromUserId:'8a8ab2ec496065050149606f1754098a',toUserId:'8a8ab2ec496065050149606f1758098b']" action="mSave">comment/mSave</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            content:评论内容<br>
+                            toUserId:接受用户ID<br>
+                            goodId:物品的ID
+                        </td>
+                        <td>
+                            mFind最新的20笔
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </ul>
         </ul>
     </div>

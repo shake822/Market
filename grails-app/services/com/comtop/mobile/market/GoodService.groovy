@@ -87,7 +87,12 @@ class GoodService {
                         eq(keys[1], it.value)
                     }
                 } else {
-                    eq(it.key, it.value)
+                    if("name".equals(it.key)){
+                        like(it.key,it.value)
+                    }else{
+                        eq(it.key, it.value)
+                    }
+
                 }
 
             }
@@ -151,6 +156,7 @@ class GoodService {
                             price      : it.price,
                             recency    : it.recency,
                             createTime : it.createTime,
+                            updateTime : it.updateTime,
                             status     : it.status,
                             transStatus: it.transStatus,
                             code       : it.code,

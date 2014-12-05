@@ -59,11 +59,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${commentInstance?.indexOrder}">
+				<g:if test="${commentInstance?.isRead}">
 				<li class="fieldcontain">
-					<span id="indexOrder-label" class="property-label"><g:message code="comment.indexOrder.label" default="Index Order" /></span>
+					<span id="isRead-label" class="property-label"><g:message code="comment.isRead.label" default="Is Read" /></span>
 					
-						<span class="property-value" aria-labelledby="indexOrder-label"><g:fieldValue bean="${commentInstance}" field="indexOrder"/></span>
+						<span class="property-value" aria-labelledby="isRead-label"><g:formatBoolean boolean="${commentInstance?.isRead}" /></span>
 					
 				</li>
 				</g:if>

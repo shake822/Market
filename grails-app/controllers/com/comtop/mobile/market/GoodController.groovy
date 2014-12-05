@@ -4,6 +4,7 @@ import com.comtop.mobile.market.util.ConstantGroovyUtils
 import com.comtop.mobile.market.util.ConstantUtils
 import com.comtop.mobile.market.util.FileUtils
 import com.comtop.mobile.market.util.JsonHelper
+import com.comtop.mobile.market.util.StringUtils
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -39,11 +40,18 @@ class GoodController {
      * @param currentPage
      * @param status
      */
-    def mFind(String pageSize, String currentPage, String status) {
+    def mFind(String pageSize, String currentPage, String status,String searchKey) {
+        println "===== ${searchKey} ${params.searchKey} ${params.searchkey}"
         def params = [:]
         if (!"-1".equals(status)) {
             params.put("status", status as int)
         }
+        println "${params}"
+
+        if(!StringUtils.isBlank(searchKey)){
+            params.put("name","%"+searchKey+"%")
+        }
+
         def data = goodService.findAll(pageSize as int, currentPage as int, params)
         data.status = status
         render JsonHelper.onSuccessBody("${data as JSON}")
@@ -81,19 +89,19 @@ class GoodController {
         good.description = params.description
         good.classify = params.classify
         good.status = params.status
-        good.price = params.price ?: 0
-        good.code = params.code
+        good.price = params.price? 0 :params.price
+        good.code = "0"
         good.transStatus = "0"
         good.recency = params.recency
         good.user = session.user
-        good.deleteFlag = params.deleteFlag ?: false
+        good.deleteFlag = false
         good.createTime = new Date()
         good.updateTime = new Date()
         List<GoodPicture> pgList = []
         try {
             4.times {
                 def f = request.getFile('imgFile' + it)
-                if (!f.isEmpty()) {
+                if (f !=null && !f.isEmpty()) {
                     GoodPicture gp = new GoodPicture()
                     gp.imgName = f.getOriginalFilename()
                     gp.indexOrder = it
@@ -104,13 +112,18 @@ class GoodController {
             }
 
             good.pictures = pgList
-
+            println good
+            if (good.hasErrors()) {
+                JsonHelper.onError("${good.errors as JSON}")
+                return
+            }
             def goodSaved = good.save flush: true
             if (goodSaved == null) {
                 render JsonHelper.onError("参数有误")
                 return
             }
         } catch (Exception e) {
+            e.printStackTrace();
             render JsonHelper.onError("服务器内部错误")
             return
         }

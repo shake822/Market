@@ -38,12 +38,12 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'indexOrder', 'error')} required">
-	<label for="indexOrder">
-		<g:message code="comment.indexOrder.label" default="Index Order" />
-		<span class="required-indicator">*</span>
+<div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'isRead', 'error')} ">
+	<label for="isRead">
+		<g:message code="comment.isRead.label" default="Is Read" />
+		
 	</label>
-	<g:field name="indexOrder" type="number" value="${commentInstance.indexOrder}" required=""/>
+	<g:checkBox name="isRead" value="${commentInstance?.isRead}" />
 
 </div>
 
