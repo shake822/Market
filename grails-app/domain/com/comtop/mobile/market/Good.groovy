@@ -20,5 +20,9 @@ class Good {
     static hasMany = [pictures: GoodPicture]
     static constraints = {
         code(blank: true)
+        pictures(blank: true)
+    }
+    static mapping = {
+        pictures cascade: "all"
     }
 }

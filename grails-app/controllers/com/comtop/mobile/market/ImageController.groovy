@@ -15,13 +15,16 @@ class ImageController {
 	def index() {
 		String uuid =  params["uuid"]
 		println "uuid = ${uuid}"
-		int width =( params["width"] == null ?200 :  params["width"] as int)
+		int width =( params["width"] == null ? 0 :  params["width"] as int)
 		File imgFile = fileUtils.getFile(uuid)
 		if (imgFile.exists()) {
 			try {
 				BufferedImage src = ImageIO.read(imgFile); // 读入文件
 				int sWidth = src.getWidth(); // 得到源图宽
 				int sHeight = src.getHeight(); // 得到源图长
+				if(width ==0){
+					width = sWidth
+				}
 				int height = (int) ((float) width / (float) sWidth * sHeight);
 				Image image = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 				BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -36,4 +39,5 @@ class ImageController {
 			}
 		}
 	}
+
 }

@@ -16,6 +16,7 @@ class GoodService {
         def pics = []
         good.pictures?.each {
             pics << [
+                    id: it.id,
                     indexOrder: it.indexOrder,
                     url       : ConstantUtils.IMAGE_URL + it.id
             ]
@@ -89,6 +90,8 @@ class GoodService {
                 } else {
                     if("name".equals(it.key)){
                         like(it.key,it.value)
+                    }else if("searchTime".equals(it.key)){
+                        lt("createTime", it.value)
                     }else{
                         eq(it.key, it.value)
                     }

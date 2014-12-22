@@ -1,5 +1,6 @@
 package com.comtop.mobile.market
 
+import com.comtop.mobile.market.util.ConstantUtils
 import com.comtop.mobile.market.util.JsonHelper
 import grails.converters.JSON
 import grails.converters.XML
@@ -14,18 +15,71 @@ class LoginController {
 	def index() {
 		render(view:"/login")
 	}
+
+	/**
+	 * 登录
+	 * @return
+	 */
 	def mLogin(){
 		String account = params["account"]
 		String password = params["password"]
 		println "${account} ==== ${password}"
 		User user = User.findWhere(account:"$account",password:"$password")
-		User u  = User.get("8a8ab2ec496065050149606f1790099a")
-		println u as JSON
 		if(user ==null){
 			render JsonHelper.onError("账号或密码错误")
 		}else{
 			session.user = user
-			render JsonHelper.onSuccessBody("${user as JSON}")
+			def data = [
+				id: user.id,
+				username:user.username,
+				account:user.account,
+				phone:user.phone,
+				department:user.department,
+				headImg:ConstantUtils.IMAGE_URL+user.headImg,
+				address:user.address
+			]
+			render JsonHelper.onSuccessBody("${data as JSON}")
+		}
+	}
+
+	def mLoginP(){
+		String account = params["account"]
+		String password = params["password"]
+		println "${account} ==== ${password}"
+		User user = User.findWhere(account:"$account",password:"$password")
+		if(user ==null){
+			render JsonHelper.onError("账号或密码错误")
+		}else{
+			session.user = user
+			def data = [
+					id: user.id,
+					username:user.username,
+					account:user.account,
+					phone:user.phone,
+					department:user.department,
+					headImg:ConstantUtils.IMAGE_URL+user.headImg,
+					address:user.address
+			]
+			//render JsonHelper.onSuccessBody("${data as JSON}")
+			def callbackFunName =  params["callbackparam"]
+			println "callbackFunName = " +callbackFunName
+			render callbackFunName + "( ${data as JSON} )"
+		}
+	}
+
+	/**
+	 * 获取用户信息
+	 * @return
+	 */
+	def mGetUserInfoP(){
+		User user = session.user
+		def callbackFunName =  params["callbackparam"]
+		println "callbackFunName = " +callbackFunName
+
+		if(user != null){
+			render callbackFunName + "( "+JsonHelper.onSuccessBody("${user as JSON}")+" )"
+		}else{
+			render callbackFunName + "( "+JsonHelper.onError("您还没有登录")+" )"
 		}
 	}
 
@@ -49,8 +103,8 @@ class LoginController {
 		}else{
 			render JsonHelper.onError("您还没有登录")
 		}
-
 	}
+
 	def login(){
 		String account = params["account"]
 		String password = params["password"]

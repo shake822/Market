@@ -253,11 +253,11 @@
                         <td>
                             pageSize:分页大小<br>
                             currentPage:当前页码<br>
-                            status:物品状态
+                            status:物品状态,searchKey:搜索关键字,searchTime:查询时间
                         </td>
                         <td>
                             body:<br>
-                            {<br>"hasMore":false,<br> "currentPage":1,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","transStatus":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
+                            {<br>"hasMore":false,<br> "currentPage":1,"searchTime":1419233500481,<br>"data":<br>[{"classify":"数码产品","userId":"1","description":"流浪","deleteFlag":false,"name":"流浪","price":0,"recency":"10","createTime":"2014-11-23 15:12:54","status":"0","transStatus":"0","code":"xxx","picture":"/image/index?uuid=ff80818149daaf3d0149db7f22f0000d"}<br>]<br>}
                         </td>
                     </tr>
                     </tbody>
@@ -376,8 +376,17 @@
                             password:密码(32位MD5加密后的大写)
                         </td>
                         <td>
-                            body：{<br>"id":"8a8ab2ec496065050149606f1790099a",<br>"account":"zhaoqunqi",<br>"address":null,<br>
-                            "department":null,<br>"headImg":null,<br>"password":"C33367701511B4F6020EC61DED352059",<br>"phone":null,<br>"username":"赵群齐"<br>}
+                            <pre>
+{
+    "id": "8a8ab2ec496065050149606f1790099a",
+    "username": "赵群齐",
+    "account": "zhaoqunqi",
+    "phone": "15814005797",
+    "department": "技术研究中心",
+    "headImg": "/image/index?uuid=null",
+    "address": "景发"
+}
+                            </pre>
                         </td>
                     </tr>
                     </tbody>
@@ -437,7 +446,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <li>修改用户信息(需要登陆):<g:link controller="user" action="mUpdate">user/mUpdate</g:link></li>
+                <li>修改用户信息(需要登陆，POST提交,form的enctype = "multipart/form-data"):<g:link controller="user" action="mUpdate">user/mUpdate</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -450,6 +459,7 @@
                             password:密码(加密后)<br>
                             department:部门<br>
                             address:地址位置<br>
+                            headImg:图片文件
                         </td>
                         <td>
                         </td>
@@ -460,7 +470,52 @@
             </ul>
             <li class="controller"><g:link controller="favorites">收藏</g:link></li>
             <ul style="margin-left: 50px">
-                <li>获取收藏列表(需要登录):<g:link controller="favorites" action="mFindMyFavorites">favorites/mFindMyFavorites</g:link></li>
+                <li>获取收藏列表(需要登录):<g:link controller="favorites" params="[pageSize:4,currentPage:1]" action="mFindMyFavorites">favorites/mFindMyFavorites</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th style="min-width: 150px"><strong>入参</strong></th>
+                        <th ><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            pageSize:分页大小<br>
+                            currentPage:当前页码
+                        </td>
+                        <td>
+                           <pre>
+{
+  "code": 1,
+  "body": {
+    "currentPage": 1,
+    "hasMore": false,
+    "data": [{
+      "id": "8a8ab2ec4a0ed127014a0f2aab220010",
+      "createTime": "2014-12-03 16:01:02",
+      "good": {
+        "id": "8a8ab2ec4998a169014998a58c9d0004",
+        "classify": "数码产品",
+        "userId": "8a8ab2ec496065050149606f1754098a",
+        "description": "sss",
+        "deleteFlag": false,
+        "name": "sss",
+        "price": 0,
+        "recency": "8",
+        "status": "1",
+        "updateTime": "2014-11-10 15:40:26",
+        "transStatus": "0",
+        "code": "xxx",
+        "picture": "/image/index?uuid=8a8ab2ec4998a169014998a58bd70000"
+      }
+    }]
+  }
+}
+                           </pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>是否收藏(需要登陆):<g:link controller="favorites" params="[goodId:'8a8ab2ec4998a169014998a58c9d0004']" action="mFindMyFavorites">favorites/mFindMyFavorites</g:link></li>
                 <table class="doc-table">
                     <tbody>
                     <tr>
@@ -469,11 +524,10 @@
                     </tr>
                     <tr>
                         <td>
-                            pageSize:分页大小<br>
-                            currentPage:当前页码
+                            goodId:物品Id
                         </td>
                         <td>
-                            body：[currentPage:1, hasMore:false, data:[{"id":"8a8ab2ec4a09fe2d014a0a0493450000","createTime":"2014-12-02 00:00:00","goodId":"8a8ab2ec4998a169014998a58c9d0004","userId":"8a8ab2ec496065050149606f1790099a","deleteFlag":false}]]
+                            msg:null 或 msg:收藏ID
                         </td>
                     </tr>
                     </tbody>
@@ -512,6 +566,23 @@
                     </tr>
                     </tbody>
                 </table>
+                <li>是否收藏(需要登陆):<g:link controller="favorites" action="mIsFavorites">favorites/mIsFavorites</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            goodId:物品id
+                        </td>
+                        <td>
+                            msg:收藏Id
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </ul>
             <li class="controller"><g:link controller="comment">评论</g:link></li>
             <ul style="margin-left: 50px">
@@ -527,7 +598,8 @@
                             pageSize:分页大小<br>
                             currentPage:当前页码<br>
                             searchTime:查询时间<br>
-                            count:记录数
+                            count:记录数<br>
+                            goodId:物品ID
                         </td>
                         <td width="70%">
                             body：{"currentPage":1,"hasMore":false,"data":[{"id":"8a8ab2ec4a09fe2d014a0df09df20017","index":1,"createTime":"2014-12-03 00:00:00","content":"水电费水电费","fromUserId":"8a8ab2ec496065050149606f1754098a","fromUserName":"罗珍明","fromUserAddr":null,"fromUserImage":null}],"searchTime":1417684072945,"count":1}

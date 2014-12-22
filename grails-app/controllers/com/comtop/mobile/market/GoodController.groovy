@@ -41,7 +41,7 @@ class GoodController {
      * @param status
      */
     def mFind(String pageSize, String currentPage, String status,String searchKey) {
-        println "===== ${searchKey} ${params.searchKey} ${params.searchkey}"
+        Date searchTime = StringUtils.isBlank(params.searchTime) ? new Date():new Date(params.searchTime as long)
         def params = [:]
         if (!"-1".equals(status)) {
             params.put("status", status as int)
@@ -51,9 +51,10 @@ class GoodController {
         if(!StringUtils.isBlank(searchKey)){
             params.put("name","%"+searchKey+"%")
         }
-
+        params.put("searchTime",searchTime)
         def data = goodService.findAll(pageSize as int, currentPage as int, params)
         data.status = status
+        data.searchTime = searchTime.getTime()
         render JsonHelper.onSuccessBody("${data as JSON}")
     }
 
@@ -89,7 +90,7 @@ class GoodController {
         good.description = params.description
         good.classify = params.classify
         good.status = params.status
-        good.price = params.price? 0 :params.price
+        good.price = params.price !=null ? params.price as int :0
         good.code = "0"
         good.transStatus = "0"
         good.recency = params.recency
@@ -112,6 +113,7 @@ class GoodController {
             }
 
             good.pictures = pgList
+            println "save Good"
             println good
             if (good.hasErrors()) {
                 JsonHelper.onError("${good.errors as JSON}")
@@ -127,11 +129,89 @@ class GoodController {
             render JsonHelper.onError("服务器内部错误")
             return
         }
-        render JsonHelper.onSuccessBody("添加成功")
+        render JsonHelper.onSuccessMessage("添加成功")
     }
 
+    @Transactional
     def mUpdate() {
 
+        Good good = Good.get(params.id)
+        if(good == null){
+            render JsonHelper.onError("宝贝不见了")
+            return
+        }
+        if(params.name !=null){
+            good.name = params.name
+        }
+
+        if(params.description !=null){
+            good.description = params.description
+        }
+        if(params.classify !=null){
+            good.classify = params.classify
+        }
+        if(params.status !=null){
+            good.status = params.status
+        }
+        if(params.price !=null){
+            good.price = Integer.parseInt(params.price)
+        }
+        if(params.recency !=null){
+            good.recency = params.recency
+        }
+        good.code = "0"
+        good.transStatus = "0"
+        good.updateTime = new Date()
+        List<GoodPicture> pgList = []
+        String deletePics = ""
+        if(!StringUtils.isBlank(params.deletePictures)){
+            deletePics =  params.deletePictures
+        }
+        good.pictures?.each {
+            if(!deletePics.contains(it.id)){
+                pgList[it.indexOrder] = it
+            }
+        }
+        try {
+            4.times {
+                def f = request.getFile('imgFile' + it)
+                if (f !=null && !f.isEmpty()) {
+                    GoodPicture gp = pgList[it] ?: new GoodPicture()
+                    gp.imgName = f.getOriginalFilename()
+                    gp.indexOrder = it
+                    gp.save flush: true
+                    fileUtils.saveFile(f, gp.id)
+                    pgList.add(gp)
+                }
+            }
+
+            good.pictures = pgList
+            println good
+            if (good.hasErrors()) {
+                JsonHelper.onError("${good.errors as JSON}")
+                return
+            }
+            def goodSaved = good.save flush: true
+
+            if(deletePics.length() >0){
+                deletePics.split(";").each {
+                    if("${it}".length() >0){
+                        fileUtils.deleteFile("${it}")
+//                        GoodPicture.get(it).delete(flush: true)
+                    GoodPicture.executeUpdate("delete GoodPicture c where c.id = :id",[id: "${it}"])
+                    }
+                }
+            }
+            if (goodSaved == null) {
+                render JsonHelper.onError("参数有误")
+                return
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            render JsonHelper.onError("服务器内部错误")
+            return
+        }
+        render JsonHelper.onSuccessMessage("添加成功")
     }
 
     @Transactional

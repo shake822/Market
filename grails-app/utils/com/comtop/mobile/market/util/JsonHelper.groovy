@@ -6,7 +6,7 @@ package com.comtop.mobile.market.util
 class JsonHelper {
 
     public static String onSuccessMessage(String msg) {
-        return "{\"code\":1,\"msg\":${msg}}"
+        return "{\"code\":1,\"msg\":\"${msg}\"}"
     }
 
     public static String onSuccessBody(String body) {
@@ -14,10 +14,14 @@ class JsonHelper {
     }
 
     public static String onSuccess(String msg, String body) {
-        return "{\"code\":1,\"msg\":${msg},\"body\":${body}}"
+        return "{\"code\":1,\"msg\":\"${msg}\",\"body\":${body}}"
     }
 
     public static String onError(String errorMessage) {
         return "{\"code\":-1,\"msg\":\"${errorMessage}\"}"
+    }
+
+    public static String onErrorNoLogin() {
+        return "{\"code\":-100,\"msg\":\"沒有登录\"}"
     }
 }

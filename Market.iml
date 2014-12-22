@@ -51,6 +51,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/integration" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/work/gspcompile" />
       <excludeFolder url="file://$MODULE_DIR$/target/work/plugin-build-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/work/plugin-classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/work/plugin-provided-classes" />
@@ -93,6 +94,7 @@
           <root url="jar://$USER_HOME$/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/7.0.55/tomcat-embed-el-7.0.55.jar!/" />
           <root url="jar://$USER_HOME$/.m2/repository/org/apache/tomcat/embed/tomcat-embed-jasper/7.0.55/tomcat-embed-jasper-7.0.55.jar!/" />
           <root url="jar://$USER_HOME$/.m2/repository/org/apache/tomcat/tomcat-catalina-ant/7.0.55/tomcat-catalina-ant-7.0.55.jar!/" />
+          <root url="jar://$USER_HOME$/.m2/repository/com/comtop/ojdbc14/10.2.0.2.0/ojdbc14-10.2.0.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

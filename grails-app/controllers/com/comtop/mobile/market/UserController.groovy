@@ -1,5 +1,7 @@
 package com.comtop.mobile.market
 
+import com.comtop.mobile.market.util.ConstantUtils
+import com.comtop.mobile.market.util.FileUtils
 import com.comtop.mobile.market.util.JsonHelper
 import com.comtop.mobile.market.util.StringUtils
 import com.comtop.mobile.utils.EIPUser
@@ -12,6 +14,8 @@ import static org.springframework.http.HttpStatus.*
 class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    FileUtils fileUtils
 
     @Transactional
     def initFromEIP() {
@@ -52,8 +56,15 @@ class UserController {
         if (!StringUtils.isBlank(params.address)) {
             user.address = params.address
         }
+        def headImg = request.getFile('headImg')
+        if (headImg !=null && !headImg.isEmpty()) {
+            fileUtils.deleteFile(user.headImg)
+            String newId = UUID.randomUUID().toString()
+            fileUtils.saveFile(headImg,newId)
+            user.headImg = newId
+        }
         user.save flush: true
-        render JsonHelper.onSuccessMessage("修改成功")
+        render JsonHelper.onSuccessMessage(ConstantUtils.IMAGE_URL+user.headImg)
     }
 
     def index(Integer max) {

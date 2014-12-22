@@ -28,4 +28,18 @@ class FileUtils {
 		}
 		file
 	}
+
+	/**
+	 * 删除文件
+	 * @param uuid
+	 */
+	void deleteFile(String uuid){
+		if(uuid ==null || uuid.length() ==0){
+			return
+		}
+		File file = new File(grailsApplication.config.images.save.path,uuid)
+		if(file.exists()){
+			file.delete()
+		}
+	}
 }

@@ -2,7 +2,9 @@ package com.comtop.mobile.market
 
 class InitDataController {
 
-	def index() { }
+	def index() {
+		initClassify()
+	}
 
 	/**
 	 * 初始化分类数据

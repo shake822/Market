@@ -18,6 +18,7 @@ class FavoritesController {
 
     def favoritesService;
 
+    UtilsService utilsService
 
     @Transactional
     def mDelete() {
@@ -34,6 +35,28 @@ class FavoritesController {
     }
 
     /**
+     * 是否搜藏物品
+     * @param goodId 物品ID
+     * @return
+     */
+    def mIsFavorites(String goodId){
+        def favoritesId
+        def list =  Favorites.findAll(){
+            user {
+                eq("id", session.user.id)
+            }
+            good{
+                eq("id", goodId)
+            }
+            eq("deleteFlag", false)
+        }
+        if(list.size() >0){
+            favoritesId = list.get(0).id
+        }
+       render JsonHelper.onSuccessMessage(favoritesId)
+    }
+
+    /**
      *
      * @param pageSize
      * @param currentPage
@@ -41,8 +64,52 @@ class FavoritesController {
      */
     def mFindMyFavorites(String pageSize, String currentPage) {
         println "123123   ${pageSize} === ${currentPage}"
-        def data = favoritesService.findAll(pageSize as int,currentPage as int,session.user.id) as JSON
-        render JsonHelper.onSuccessBody("${data}")
+
+        def data = utilsService.findAll(pageSize,currentPage){
+            queryParams ->
+                def list =  Favorites.findAll(queryParams){
+                    user {
+                        eq("id", session.user.id)
+                    }
+                    eq("deleteFlag", false)
+                }
+                def data = list.collect(){
+                    def pictureId = null
+                    def pictureIndex = 4
+                    it.good?.pictures?.each() {
+                        if (pictureIndex > it.indexOrder) {
+                            pictureId = ConstantUtils.IMAGE_URL + it.id
+                            pictureIndex = it.indexOrder
+                        }
+
+                        if (it.indexOrder == 0) {
+                            return
+                        }
+                    }
+                    [
+                            id        : it.id,
+                            createTime: it.createTime,
+                            good   : [
+                                    id         : it.good.id,
+                                    classify   :  it.good.classify,
+                                    userId     :  it.good.userId,
+                                    description:  it.good.description,
+                                    deleteFlag :  it.good.deleteFlag,
+                                    name       :  it.good.name,
+                                    price      :  it.good.price,
+                                    recency    :  it.good.recency,
+                                    status     :  it.good.status,
+                                    updateTime : it.good.updateTime,
+                                    transStatus:  it.good.transStatus,
+                                    code       :  it.good.code,
+                                    picture    : pictureId
+                            ]
+                    ]
+                }
+                data
+        }
+
+        render JsonHelper.onSuccessBody("${data as JSON}")
     }
 
     @Transactional
@@ -52,9 +119,9 @@ class FavoritesController {
         favorites.deleteFlag = params.deleteFlag ?: false
         favorites.user = session.user
         favorites.good = Good.get(params.goodId)
-
+        Favorites favoritesSaved
         try {
-            def favoritesSaved = favorites.save flush: true
+            favoritesSaved = favorites.save flush: true
             if (favoritesSaved == null) {
                 render JsonHelper.onError("参数有误")
                 return
@@ -63,7 +130,8 @@ class FavoritesController {
             render JsonHelper.onError("服务器内部错误")
             return
         }
-        render JsonHelper.onSuccessBody("添加成功")
+
+        render JsonHelper.onSuccessMessage("${favoritesSaved.id}")
     }
 
 
@@ -125,7 +193,7 @@ class FavoritesController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Favorites.label', default: 'Favorites'), favoritesInstance.id])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'favorites.label', default: 'Favorites'), favoritesInstance.id])
                 redirect favoritesInstance
             }
             '*' { respond favoritesInstance, [status: OK] }
@@ -144,7 +212,7 @@ class FavoritesController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Favorites.label', default: 'Favorites'), favoritesInstance.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'favorites.label', default: 'Favorites'), favoritesInstance.id])
                 redirect action: "index", method: "GET"
             }
             '*' { render status: NO_CONTENT }

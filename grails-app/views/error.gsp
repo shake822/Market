@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ page import="com.comtop.mobile.market.util.JsonHelper" %>
+%{--<!DOCTYPE html>
 <html>
 	<head>
 		<title><g:if env="development">Grails Runtime Exception</g:if><g:else>Error</g:else></title>
@@ -15,4 +16,5 @@
 			</ul>
 		</g:else>
 	</body>
-</html>
+</html>--}%
+<%=JsonHelper.onError("服务器内部错误")%>

@@ -6,4 +6,5 @@ class GoodPicture {
 	String imgName
     static constraints = {
     }
+
 }

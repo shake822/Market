@@ -19,8 +19,8 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-          	           url = "jdbc:mysql://10.10.5.227:3306/market?useUnicode=true&characterEncoding=utf-8"
-//            url = "jdbc:mysql://127.0.0.1:3306/market?useUnicode=true&characterEncoding=utf-8"
+            //         	           url = "jdbc:mysql://10.10.5.227:3306/market?useUnicode=true&characterEncoding=utf-8"
+            url = "jdbc:mysql://127.0.0.1:3306/market?useUnicode=true&characterEncoding=utf-8"
             driverClassName = "com.mysql.jdbc.Driver"
             logSql = true
             dialect = org.hibernate.dialect.MySQL5InnoDBDialect
@@ -55,10 +55,13 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:mysql://10.10.5.227:3306/market?useUnicode=true&characterEncoding=utf-8"
+            driverClassName = "com.mysql.jdbc.Driver"
+            dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+            username = "market"
+            password = "market"
             properties {
-                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                 jmxEnabled = true
                 initialSize = 5
                 maxActive = 50
@@ -74,7 +77,7 @@ environments {
                 testOnBorrow = true
                 testWhileIdle = true
                 testOnReturn = false
-                jdbcInterceptors = "ConnectionState"
+                jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
                 defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
         }

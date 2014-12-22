@@ -53,7 +53,7 @@ grails.project.dependency.resolution = {
 		// runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
 		test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
 		runtime 'mysql:mysql-connector-java:5.1.29'
-//		runtime 'com.comtop:ojdbc14:10.2.0.2.0'
+     	runtime 'com.comtop:ojdbc14:10.2.0.2.0'
 		runtime 'org.bouncycastle:bcprov-jdk15:1.45'
 	}
 

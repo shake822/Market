@@ -25,8 +25,7 @@ class UtilsService {
         params.offset = (iCurrentPage - 1) * iPageSize
 
         def list = query.call(params)
-        println "${list.size()}"
-        if (list.size() == pageSize + 1) {
+        if (list.size() == iPageSize + 1) {
             returnMap.hasMore = true
             list.remove(pageSize)
         } else {

@@ -1,6 +1,8 @@
 package com.comtop.mobile.market
 
+import com.comtop.mobile.market.util.ConstantUtils
 import com.comtop.mobile.market.util.JsonHelper
+import com.comtop.mobile.market.util.StringUtils
 import grails.converters.JSON
 
 import static org.springframework.http.HttpStatus.*
@@ -24,7 +26,7 @@ class CommentController {
      * @param goodId
      */
     def mFind(String pageSize, String currentPage,String goodId){
-        Date searchTime = params.searchTime ==null ? new Date():new Date(params.searchTime as long)
+        Date searchTime = StringUtils.isBlank(params.searchTime) ? new Date():new Date(params.searchTime as long)
         int count = params.count ==null ? -1:  params.count as int
         if(count == -1){
             count = utilsService.getCount {
@@ -34,7 +36,6 @@ class CommentController {
         int iPageSize  = pageSize as int
         int iCurrentPage  = currentPage as int
         int startCount = count - (iCurrentPage - 1) * iPageSize
-        println "${count}"
         def data = utilsService.findAll(pageSize,currentPage){
             queryParams ->
                def list =  Comment.findAll(queryParams){
@@ -51,11 +52,12 @@ class CommentController {
                                 fromUserId:it.fromUser.id,
                                 fromUserName:it.fromUser.username,
                                 fromUserAddr:it.fromUser.address,
-                                fromUserImage:it.fromUser.headImg
+                                fromUserImage: ConstantUtils.IMAGE_URL+ it.fromUser.headImg
                         ]
                 }
                 data
         }
+        println data
         data.searchTime = searchTime.getTime()
         data.count  = count
         render JsonHelper.onSuccessBody("${data as JSON}")
@@ -66,14 +68,26 @@ class CommentController {
      * 保存评论信息
      */
     @Transactional
-    def mSave(String content,String goodId,String fromUserId,String toUserId){
+    def mSave(String content,String goodId,String toUserId){
+        Good good =  Good.get(goodId)
         Comment comment = new Comment()
-        comment.good = Good.get(goodId)
+        comment.good = good
         comment.fromUser = session.user
-        comment.toUser = User.get(toUserId)
+        if(!StringUtils.isBlank(toUserId)){
+            def users = []
+            toUserId.split(';').each {
+                 User tmpUser = User.get(it)
+                 users << tmpUser
+            }
+            comment.toUsers = users
+        }else{
+            comment.toUsers = [good.user]
+        }
+        println comment.toUsers
         comment.createTime = new Date()
         comment.isRead = false
         comment.content = content
+        println comment
         def commentSaved = comment.save flush:true
         if (commentSaved == null) {
             render JsonHelper.onError("保存失败")
