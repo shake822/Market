@@ -116,11 +116,11 @@ class CommentController {
             notFound()
             return
         }
-
-        if (commentInstance.hasErrors()) {
-            respond commentInstance.errors, view:'create'
-            return
-        }
+        commentInstance.createTime = new Date()
+//        if (commentInstance.hasErrors()) {
+//            respond commentInstance.errors, view:'create'
+//            return
+//        }
 
         commentInstance.save flush:true
 
@@ -143,7 +143,7 @@ class CommentController {
             notFound()
             return
         }
-
+        commentInstance.createTime = new Date()
         if (commentInstance.hasErrors()) {
             respond commentInstance.errors, view:'edit'
             return

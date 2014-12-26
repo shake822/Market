@@ -23,6 +23,24 @@ class UserController {
         users.getAllUsers().each() { it.save flush: true }
     }
 
+    @Transactional
+    def updateFromEip(){
+        EIPUser users = new EIPUser()
+        users.getAllUsers().each() {
+            User dbUser = User.findByAccount(it.account)
+            if(dbUser !=null){
+                dbUser.setDepartment(it.department)
+                dbUser.setPhone(it.phone)
+                dbUser.save flush:true
+            }else{
+                it.save flush: true
+            }
+        }
+    }
+
+    def initUserInfo(){
+
+    }
     /**
      * 获取用户信息
      * @param id 用户Id

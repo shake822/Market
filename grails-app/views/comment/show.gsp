@@ -45,7 +45,7 @@
 				<li class="fieldcontain">
 					<span id="fromUser-label" class="property-label"><g:message code="comment.fromUser.label" default="From User" /></span>
 					
-						<span class="property-value" aria-labelledby="fromUser-label"><g:link controller="user" action="show" id="${commentInstance?.fromUser?.id}">${commentInstance?.fromUser?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="fromUser-label"><g:link controller="user" action="show" id="${commentInstance?.fromUser?.id}">${commentInstance?.fromUser?.username}</g:link></span>
 					
 				</li>
 				</g:if>
@@ -54,7 +54,7 @@
 				<li class="fieldcontain">
 					<span id="good-label" class="property-label"><g:message code="comment.good.label" default="Good" /></span>
 					
-						<span class="property-value" aria-labelledby="good-label"><g:link controller="good" action="show" id="${commentInstance?.good?.id}">${commentInstance?.good?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="good-label"><g:link controller="good" action="show" id="${commentInstance?.good?.id}">${commentInstance?.good?.name}</g:link></span>
 					
 				</li>
 				</g:if>
@@ -68,11 +68,13 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${commentInstance?.toUser}">
+				<g:if test="${commentInstance?.toUsers}">
 				<li class="fieldcontain">
-					<span id="toUser-label" class="property-label"><g:message code="comment.toUser.label" default="To User" /></span>
+					<span id="toUsers-label" class="property-label"><g:message code="comment.toUsers.label" default="To Users" /></span>
 					
-						<span class="property-value" aria-labelledby="toUser-label"><g:link controller="user" action="show" id="${commentInstance?.toUser?.id}">${commentInstance?.toUser?.encodeAsHTML()}</g:link></span>
+						<g:each in="${commentInstance.toUsers}" var="t">
+						<span class="property-value" aria-labelledby="toUsers-label"><g:link controller="user" action="show" id="${t.id}">${t?.username}</g:link></span>
+						</g:each>
 					
 				</li>
 				</g:if>

@@ -11,21 +11,14 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'createTime', 'error')} required">
-	<label for="createTime">
-		<g:message code="comment.createTime.label" default="Create Time" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:datePicker name="createTime" precision="day"  value="${commentInstance?.createTime}"  />
 
-</div>
 
 <div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'fromUser', 'error')} required">
 	<label for="fromUser">
 		<g:message code="comment.fromUser.label" default="From User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="fromUser" name="fromUser.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${commentInstance?.fromUser?.id}" class="many-to-one"/>
+	<g:select id="fromUser" name="fromUser.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" optionValue="username" required="" value="${commentInstance?.fromUser?.id}" class="many-to-one"/>
 
 </div>
 
@@ -34,7 +27,7 @@
 		<g:message code="comment.good.label" default="Good" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.Good.list()}" optionKey="id" required="" value="${commentInstance?.good?.id}" class="many-to-one"/>
+	<g:select id="good" name="good.id" from="${com.comtop.mobile.market.Good.list()}" optionKey="id" optionValue="name" required="" value="${commentInstance?.good?.id}" class="many-to-one"/>
 
 </div>
 
@@ -47,12 +40,12 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'toUser', 'error')} required">
-	<label for="toUser">
-		<g:message code="comment.toUser.label" default="To User" />
-		<span class="required-indicator">*</span>
+<div class="fieldcontain ${hasErrors(bean: commentInstance, field: 'toUsers', 'error')} ">
+	<label for="toUsers">
+		<g:message code="comment.toUsers.label" default="To Users" />
+		
 	</label>
-	<g:select id="toUser" name="toUser.id" from="${com.comtop.mobile.market.User.list()}" optionKey="id" required="" value="${commentInstance?.toUser?.id}" class="many-to-one"/>
+	<g:select name="toUsers" from="${com.comtop.mobile.market.User.list()}" multiple="multiple" optionValue="username" optionKey="id" size="5" value="${commentInstance?.toUsers*.id}" class="many-to-many"/>
 
 </div>
 

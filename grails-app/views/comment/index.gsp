@@ -34,8 +34,6 @@
 					
 						<g:sortableColumn property="isRead" title="${message(code: 'comment.isRead.label', default: 'Is Read')}" />
 					
-						<th><g:message code="comment.toUser.label" default="To User" /></th>
-					
 					</tr>
 				</thead>
 				<tbody>
@@ -46,13 +44,11 @@
 					
 						<td><g:formatDate date="${commentInstance.createTime}" /></td>
 					
-						<td>${fieldValue(bean: commentInstance, field: "fromUser")}</td>
+						<td>${fieldValue(bean: commentInstance, field: "fromUser.username")}</td>
 					
-						<td>${fieldValue(bean: commentInstance, field: "good")}</td>
+						<td>${fieldValue(bean: commentInstance, field: "good.name")}</td>
 					
 						<td><g:formatBoolean boolean="${commentInstance.isRead}" /></td>
-					
-						<td>${fieldValue(bean: commentInstance, field: "toUser")}</td>
 					
 					</tr>
 				</g:each>

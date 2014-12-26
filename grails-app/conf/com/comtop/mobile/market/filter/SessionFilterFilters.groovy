@@ -41,6 +41,13 @@ class SessionFilterFilters {
                         }
                         return true
                     }
+                    if ("${"feedback".equals(controllerName)}" == "true") {
+                        if ("${actionName in ["mSave","mFind"]}" == "true") {
+                            render noLogin
+                            return false
+                        }
+                        return true
+                    }
                 }
             }
         }

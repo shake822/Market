@@ -627,6 +627,69 @@
                     </tbody>
                 </table>
             </ul>
+            <li class="controller"><g:link controller="feedback">${message(code: 'feedback.label', default: 'Feedback')}</g:link></li>
+            <ul style="margin-left: 50px">
+                <li>保存意见反馈(需要登录)url:<g:link controller="feedback" action="mSave">feedback/mSave</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            content:内容
+                            feedbackId：反馈id(如果为回复，必须带上)
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <li>查询反馈(需要登录)url:<g:link controller="feedback" action="mFind">feedback/mFind</g:link></li>
+                <table class="doc-table">
+                    <tbody>
+                    <tr>
+                        <th><strong>入参</strong></th>
+                        <th><strong>返回</strong></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            pageSize:分页大小
+                            currentPage:当前页码
+                            searchTime:查询时间
+                        </td>
+                        <td>
+                            <pre>
+{
+    "code": 1,
+    "body": {
+        "currentPage": 1,
+        "hasMore": false,
+        "data": [{
+            "id": "8a8ab2ec4a757a95014a759641c10005",
+            "createTime": "2014-12-23 13:19:49",
+            "content": "ccccc",
+            "repeats": [{
+                "id": "8a8ab2ec4a757a95014a759727080006",
+                "createTime": "2014-12-23 13:20:47",
+                "content": "RepeatCccccc",
+                "fromUserId": "8a8ab2ec4a56df71014a56e200e8026c",
+                "fromUserName": "杜祺",
+                "fromUserAddr": "qeqeq",
+                "fromUserImage": "/image/index?uuid=null"
+            }]
+        }],
+        "searchTime": 1419315023300
+    }
+}
+                            </pre>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </ul>
         </ul>
     </div>
 
